@@ -1,4 +1,4 @@
-package Exceptions.DTO;
+package org.nctry.server.Exceptions.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
