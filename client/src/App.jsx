@@ -16,6 +16,7 @@ function App() {
       <Button onClick={increasePopulation}>buton</Button>
       <Button onClick={removeAllBears}>resetear</Button>
       <Button onClick={() => updateBears(77)}>actualizar numero a 77</Button>
+      <Button variant="destructive">example</Button>
     </>
   );
 }
