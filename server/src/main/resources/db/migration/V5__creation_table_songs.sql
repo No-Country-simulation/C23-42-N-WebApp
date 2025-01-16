@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS songs
+(
+id INT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+cover_picture VARCHAR(255) DEFAULT 'public/images/defaultCoverPictureSong.jpg',
+source_url VARCHAR(255) NOT NULL,
+artist_id INT NOT NULL,
+duration_seconds INT NOT NULL,
+likes INT DEFAULT 0,
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+is_active TINYINT(1) DEFAULT 1,
+FOREIGN KEY (artist_id) REFERENCES artists(id)
+)
