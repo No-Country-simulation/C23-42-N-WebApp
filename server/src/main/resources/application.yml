@@ -1,1 +1,11 @@
-spring.application.name=server
+spring:
+  application:
+    name: server
+  datasource:
+    url: jdbc:mysql://localhost:3308/Test
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
