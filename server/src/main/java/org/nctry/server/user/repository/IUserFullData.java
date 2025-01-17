@@ -1,7 +1,7 @@
-package org.nctry.user.domain.repository;
+package org.nctry.server.user.repository;
 
+import org.nctry.server.user.model.UserFulldata;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.nctry.user.domain.model.UserFulldata;
 
 public interface IUserFullData extends JpaRepository<UserFulldata, Long> {
 }

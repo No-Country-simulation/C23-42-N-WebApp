@@ -1,12 +1,9 @@
-package org.nctry.user.domain.dto.request;
+package org.nctry.server.user.dto.request;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import org.nctry.user.domain.enums.Country;
+import org.nctry.server.user.enums.Country;
 
 import java.time.LocalDate;
 

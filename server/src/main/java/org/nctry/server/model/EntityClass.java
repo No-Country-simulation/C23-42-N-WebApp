@@ -1,4 +1,4 @@
-package org.nctry.entityClass.model;
+package org.nctry.server.model;
 
 import jakarta.persistence.*;
 import lombok.Data;

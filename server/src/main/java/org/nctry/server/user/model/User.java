@@ -1,4 +1,4 @@
-package org.nctry.user.domain.model;
+package org.nctry.server.user.model;
 
 import jakarta.persistence.*;
 import lombok.*;

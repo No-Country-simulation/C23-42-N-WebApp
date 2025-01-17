@@ -1,8 +1,8 @@
-package org.nctry.user.domain.dto.response;
+package org.nctry.server.user.dto.response;
 
-import org.nctry.user.domain.enums.Country;
-import org.nctry.user.domain.model.User;
-import org.nctry.user.domain.model.UserFulldata;
+import org.nctry.server.user.enums.Country;
+import org.nctry.server.user.model.User;
+import org.nctry.server.user.model.UserFulldata;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

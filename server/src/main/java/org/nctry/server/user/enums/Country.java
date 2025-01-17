@@ -1,4 +1,4 @@
-package org.nctry.user.domain.enums;
+package org.nctry.server.user.enums;
 
 public enum Country {
     ESTADOS_UNIDOS,

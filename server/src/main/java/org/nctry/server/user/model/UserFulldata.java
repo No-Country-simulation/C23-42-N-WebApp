@@ -1,11 +1,11 @@
-package org.nctry.user.domain.model;
+package org.nctry.server.user.model;
 
-import org.nctry.entityClass.model.EntityClass;
+import org.nctry.server.model.EntityClass;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.nctry.user.domain.enums.Country;
+import org.nctry.server.user.enums.Country;
 
 import java.time.LocalDate;
 
