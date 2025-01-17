@@ -1,4 +1,5 @@
 import "./App.css";
+import RegisterForm from "./components/RegisterForm";
 import { Button } from "./components/ui/button";
 import { useStore } from "./store/useExampleStore.js";
 
@@ -18,6 +19,7 @@ function App() {
       <Button onClick={() => updateBears(77)}>actualizar numero a 77</Button>
       <Button variant="destructive">example</Button>
       <Button variant="btnOrange">Registrarse</Button>
+      <RegisterForm />
     </>
   );
 }
