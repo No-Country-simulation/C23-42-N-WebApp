@@ -10,7 +10,7 @@ export function ArtistCard({ name, image, followers,children }) {
           <img
             src={image || "/placeholder.svg"}
             alt={name}
-            className="object-cover transition-all group-hover:scale-105"
+            className="object-cover w-full h-full transition-all group-hover:scale-105"
           />
           <button 
             className="absolute bottom-2 right-2 flex h-12 w-12 translate-y-4 items-center justify-center rounded-full bg-[#FF5722] opacity-0 shadow-lg transition-all group-hover:translate-y-0 group-hover:opacity-100"

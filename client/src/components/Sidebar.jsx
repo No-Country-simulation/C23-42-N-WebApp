@@ -8,8 +8,13 @@ export function Sidebar() {
       {/* Main navigation */}
       <div className="p-6">
         <div className="flex items-center gap-2 px-2 mb-6">
-          <div className="size-8 rounded-lg bg-[#FF5722]" />
-          <span className="text-xl font-bold">Musync</span>
+         {/* Imagen del logo */}
+         <img 
+            src="/images/musync1_720.jpg" 
+            alt="Musync Logo" 
+            className="w-40 h-30 object-cover rounded-full"
+          />
+          
         </div>
         
         <nav className="space-y-2">
