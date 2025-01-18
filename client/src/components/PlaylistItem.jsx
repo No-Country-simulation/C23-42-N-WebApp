@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 export function PlaylistItem({ title, type, owner }) {
     return (
       <a
@@ -12,5 +13,10 @@ export function PlaylistItem({ title, type, owner }) {
       </a>
     )
   }
-  
+  PlaylistItem.propTypes = {
+    children: PropTypes.node, // Valida que children sea cualquier nodo renderizable
+    title: PropTypes.string.isRequired, // You can adjust the type based on your needs
+    type: PropTypes.string.isRequired, // You can adjust the type based on your needs
+    owner: PropTypes.string.isRequired, // You can adjust the type based on your needs
+  };
   
