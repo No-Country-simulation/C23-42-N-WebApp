@@ -1,39 +1,64 @@
-import { Home, Search, Library } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { Home, Search, Library, Plus } from 'lucide-react'
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { PlaylistItem } from './PlaylistItem'
 
-export default function Sidebar() {
+export function Sidebar() {
   return (
-    <div className="w-64 bg-card text-card-foreground flex flex-col h-full">
+    <aside className="flex w-[350px] flex-col gap-2 bg-card">
+      {/* Main navigation */}
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Musync</h1>
-        <nav className="space-y-4">
-          <Button variant="ghost" className="w-full justify-start">
-            <Home className="mr-2 h-4 w-4" />
+        <div className="flex items-center gap-2 px-2 mb-6">
+          <div className="size-8 rounded-lg bg-[#FF5722]" />
+          <span className="text-xl font-bold">Musync</span>
+        </div>
+        
+        <nav className="space-y-2">
+          <a 
+            href="#" 
+            className="flex items-center gap-4 rounded-lg px-4 py-3 text-muted-foreground transition-colors hover:text-foreground hover:bg-orange-100/10"
+          >
+            <Home className="size-6" />
             Inicio
-          </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <Search className="mr-2 h-4 w-4" />
+          </a>
+          <a 
+            href="#" 
+            className="flex items-center gap-4 rounded-lg px-4 py-3 text-muted-foreground transition-colors hover:text-foreground hover:bg-orange-100/10"
+          >
+            <Search className="size-6" />
             Buscar
-          </Button>
-          <Button variant="ghost" className="w-full justify-start">
-            <Library className="mr-2 h-4 w-4" />
-            Tu Biblioteca
-          </Button>
+          </a>
         </nav>
       </div>
-      <ScrollArea className="flex-1 px-6">
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Tus Playlists</h2>
-          {/* Aquí puedes agregar una lista de playlists */}
-          <ul className="space-y-2">
-            <li><a href="#" className="hover:underline">Playlist 1</a></li>
-            <li><a href="#" className="hover:underline">Playlist 2</a></li>
-            <li><a href="#" className="hover:underline">Playlist 3</a></li>
-          </ul>
+
+      {/* Library section */}
+      <div className="flex-1 bg-card/50 px-3">
+        <div className="flex items-center gap-4 px-3 py-4">
+          <div className="flex items-center gap-2">
+            <Library className="size-6" />
+            <span className="font-semibold">Tu Biblioteca</span>
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            <button className="rounded-full p-2 hover:bg-orange-100/10">
+              <Plus className="size-5" />
+            </button>
+          </div>
         </div>
-      </ScrollArea>
-    </div>
+
+        {/* Playlists */}
+        <ScrollArea className="h-[calc(100vh-300px)]">
+          <div className="space-y-1 p-2">
+            {Array.from({ length: 50 }).map((_, i) => (
+              <PlaylistItem 
+                key={i}
+                title={`Mi Playlist #${i + 1}`}
+                type="Playlist"
+                owner="Usuario"
+              />
+            ))}
+          </div>
+        </ScrollArea>
+      </div>
+    </aside>
   )
 }
 
