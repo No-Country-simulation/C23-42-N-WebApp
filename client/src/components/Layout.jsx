@@ -1,7 +1,7 @@
 import { Sidebar } from './Sidebar'
 import { Player } from './Player'
 import { MainContent } from './MainContent'
-
+import PropTypes from 'prop-types'
 
 export function Layout({ children }) {
   return (
@@ -14,4 +14,6 @@ export function Layout({ children }) {
     </div>
   )
 }
-
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,  // Validación para los children
+};
