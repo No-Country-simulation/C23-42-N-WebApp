@@ -1,9 +1,7 @@
 package org.nctry.server.user.dto.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.nctry.server.user.enums.Country;
@@ -27,6 +25,8 @@ public class dtoUser_create {
 
     @NotNull(message = "¡El campo fecha de nacimiento no puede estar vacio!")
     @Pattern(regexp = "^[0-9\\-/-]+$", message = "¡Sólo números son aceptados para el campo fecha de nacimiento")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @Past(message = "La fecha de nacimiento debe ser pasado")
     private LocalDate birthday;
 
     @NotNull(message = "¡El campo país no puede estar vacio!")
