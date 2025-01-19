@@ -1,6 +1,7 @@
 import { Layout } from './components/Layout'
 import "./App.css";
 import RegisterForm from "./components/RegisterForm";
+import LoginForm from './components/LoginForm';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     
       
       <RegisterForm />
+      <LoginForm />
     </>
   );
 }
