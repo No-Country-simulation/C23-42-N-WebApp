@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @EqualsAndHashCode(of = "id")
 @Table(name = "users")
 public class User {
@@ -18,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY) // Reference to the UserFullData table
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) // Reference to the UserFullData table
     @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
     private UserFulldata userFullData;
     @Column(name = "username", nullable = false, unique = true)
