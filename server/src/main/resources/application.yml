@@ -1,28 +1,11 @@
 spring:
   application:
     name: server
-  #db configuration data
   datasource:
-    url: jdbc:mysql://localhost/musync
+    url: jdbc:mysql://localhost:3308/Test
     username: root
-
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    properties:
-      hibernate:
-        #FOR TESTING ONLY!!!
-        format_sql: true
-    #FOR TESTING ONLY!!!
-    show-sql: true
-
-  data:
-    web:
-      pageable:
-        page-parameter: pagina
-        size-parameter: tamano
-    sort:
-      sort-parameter: orden
-
-server:
-  error:
-    include-stacktrace: never
-
+    hibernate:
+      ddl-auto: update
