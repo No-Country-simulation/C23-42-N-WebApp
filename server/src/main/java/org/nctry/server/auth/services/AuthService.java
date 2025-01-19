@@ -83,7 +83,7 @@ public class AuthService {
                 .country(country)
                 .role(1)
                 .confirmationCode(generateVerificationCode())
-                .verificationCodeExpiresAt(LocalDateTime.now().plusMinutes(15))
+                .verificationCodeExpiresAt(LocalDateTime.now().plusMinutes(1440)) //expira en 1 dia
                 .enabled(false)
                 .build();
 
@@ -135,7 +135,7 @@ public class AuthService {
                 throw new RuntimeException("La cuenta esta verificada");
             }
             user.getUserFullData().setConfirmationCode(generateVerificationCode());
-            user.getUserFullData().setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(5));
+            user.getUserFullData().setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(1440)); //expira en 1 dia
             sendVerificationEmail(user);
             userRepository.save(user);
         }
