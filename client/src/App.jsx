@@ -1,7 +1,12 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import RegisterPage from './pages/RegisterPage';
-import LoginPage from './pages/LoginPage';
-import { Layout } from './components/Layout';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { Layout } from "./components/Layout";
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
@@ -9,14 +14,13 @@ function App() {
       <Routes>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<Layout />}/>
+        <Route path="/" element={<Layout />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
-
 
 /*import { Layout } from './components/Layout'
 import "./App.css";
@@ -31,9 +35,8 @@ function App() {
     <>
     <Layout>
     {/* Contenido adicional irá aquí */
-  //</Layout>
-    
-      
+//</Layout>
+
 /*     <RegisterForm />
       <LoginForm />
     </>
