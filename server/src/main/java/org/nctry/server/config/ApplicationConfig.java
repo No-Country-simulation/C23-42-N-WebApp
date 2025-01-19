@@ -1,6 +1,7 @@
 
 package org.nctry.server.config;
 
+import org.nctry.server.user.UserDetailsWrapper;
 import org.nctry.server.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -46,8 +47,9 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailService() {
-        return username -> userRepository.findByUserName(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return username -> userRepository.findByUsername(username)
+                .map(UserDetailsWrapper::new)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found exception"));
     }
 
 }
