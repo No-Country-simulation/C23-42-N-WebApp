@@ -1,7 +1,7 @@
 import { Home, Search, Library, Plus } from 'lucide-react'
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { PlaylistItem } from './PlaylistItem'
-
+import { Link } from 'react-router-dom'
 export function Sidebar() {
   return (
     <aside className="flex w-[350px] flex-col gap-2 bg-card">
@@ -22,13 +22,14 @@ export function Sidebar() {
             href="#" 
             className="flex items-center gap-4 rounded-lg px-4 py-3 text-muted-foreground transition-colors hover:text-foreground hover:bg-orange-100/10"
           >
-            <Home className="size-6" />
-            Inicio
-          </a>
-          <a 
-            href="#" 
+          
+          <Link 
+            to="/login" 
             className="flex items-center gap-4 rounded-lg px-4 py-3 text-muted-foreground transition-colors hover:text-foreground hover:bg-orange-100/10"
           >
+            <Home className="size-6" />
+            Inicio
+          </Link>
             <Search className="size-6" />
             Buscar
           </a>

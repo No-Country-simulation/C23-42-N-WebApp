@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card, CardContent, CardHeader } from "./ui/card";
+import { Link } from 'react-router-dom'
 import {
   Form,
   FormControl,
@@ -101,6 +102,7 @@ export default function RegisterForm() {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-2 text-center">
           <div className="flex justify-center">
+          <Link to="/">
             <img
               src="/logo-musync3.png"
               alt="Logo"
@@ -108,6 +110,7 @@ export default function RegisterForm() {
               height={48}
               className="h-12 w-12"
             />
+            </Link>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-orangePrimary">
             Crear cuenta
