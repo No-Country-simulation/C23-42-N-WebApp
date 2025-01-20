@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SongServiceImpl implements SongService {
 
+    @Override
     public /*SongDTO*/ void saveSong(/*SongDTO songDTO*/) {
         //Si la song no existe, crea el objeto, de lo contrario actualiza el objeto
         /*
@@ -14,7 +15,7 @@ public class SongServiceImpl implements SongService {
         */
     }
 
-
+    @Override
     public void deleteSongById(Long id) {
         /*
             TODO:
@@ -24,6 +25,7 @@ public class SongServiceImpl implements SongService {
         */
     }
 
+    @Override
     public void deleteSong(/*SongDTO songDTO*/){
         /*
             TODO:
@@ -34,6 +36,7 @@ public class SongServiceImpl implements SongService {
         */
     }
 
+    @Override
     public /*SongDTO*/ void getSongById(Long id) {
         /*
             TODO:
@@ -43,6 +46,7 @@ public class SongServiceImpl implements SongService {
         */
     }
 
+    @Override
     public /*List<SongDTO>*/ void getAllSong() {
         /*
             TODO:
@@ -51,6 +55,7 @@ public class SongServiceImpl implements SongService {
         */
     }
 
+    @Override
     public /*List<SongDTO>*/ void getAllSongByName(String name) {
         /*
             TODO:
@@ -58,6 +63,7 @@ public class SongServiceImpl implements SongService {
         */
     }
 
+    @Override
     public /*List<SongDTO>*/ void getAllSongByGenre(String genre) {
         /*
             TODO:
@@ -65,6 +71,7 @@ public class SongServiceImpl implements SongService {
         */
     }
 
+    @Override
     public void likeSong(Long userId, Long songId) {
         /*
             TODO:
@@ -72,8 +79,6 @@ public class SongServiceImpl implements SongService {
                 Aumentar el contador de likes de la publicacion en 1 por cada vez que se le de
         */
     }
-
-
 
     /*
         TODO:
