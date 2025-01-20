@@ -17,6 +17,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/*color text input after choise opcion input menu*/
+input {
+  -webkit-text-fill-color: #012 !important;
+  background-color: white !important;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
