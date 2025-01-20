@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card, CardContent, CardHeader } from "./ui/card";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import {
   Form,
   FormControl,
@@ -50,7 +50,7 @@ export default function LoginForm() {
           variant: "success",
         });
         // Save login timestamp (optional)
-        localStorage.setItem('lastLogin', new Date().toISOString());
+        localStorage.setItem("lastLogin", new Date().toISOString());
         // Redirect to dashboard
         window.location.href = "/dashboard";
       }
@@ -72,7 +72,8 @@ export default function LoginForm() {
           default:
             toast({
               title: "Error",
-              description: "Hubo un problema al iniciar sesión. Intente más tarde.",
+              description:
+                "Hubo un problema al iniciar sesión. Intente más tarde.",
               variant: "destructive",
             });
         }
@@ -93,28 +94,28 @@ export default function LoginForm() {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-2 text-center">
           <div className="flex justify-center">
-           {/* Agrega el componente Link envolviendo la imagen */}
-           <Link to="/">
-            <img
-              src="/logo-musync3.png"
-              alt="Logo"
-              width={48}
-              height={48}
-              className="h-12 w-12"
-            />
-              </Link>
+            {/* Agrega el componente Link envolviendo la imagen */}
+            <Link to="/">
+              <img
+                src="/logo-musync3.png"
+                alt="Logo"
+                width={48}
+                height={48}
+                className="h-12 w-12"
+              />
+            </Link>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-orangePrimary">
             Iniciar sesión
           </h1>
           <p className="text-sm text-gray-600">
             ¿No tienes una cuenta?{" "}
-            <a
-              href="/register"
+            <Link
+              to="/register"
               className="text-indigo-500 font-bold hover:underline"
             >
               Regístrate
-            </a>
+            </Link>
           </p>
         </CardHeader>
         <CardContent>
@@ -176,4 +177,3 @@ export default function LoginForm() {
     </div>
   );
 }
-
