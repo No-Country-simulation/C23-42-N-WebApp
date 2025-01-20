@@ -68,6 +68,7 @@ public class CommentController {
         commentService.addReactionToComment(commentId, reaction, userId);
         return ResponseEntity.ok(data);
     }
+
     @DeleteMapping("/delete")
     public ResponseEntity<Object> deleteCommentById(@RequestParam Long commentId) {
         data = new HashMap<>();
