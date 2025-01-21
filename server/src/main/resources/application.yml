@@ -1,6 +1,7 @@
 spring:
   application:
     name: server
+
   #db configuration data
   datasource:
     url: jdbc:mysql://localhost/musync
@@ -26,3 +27,7 @@ server:
   error:
     include-stacktrace: never
 
+
+#  mvc:
+#    servlet:
+#      path: /api/v1/demo
