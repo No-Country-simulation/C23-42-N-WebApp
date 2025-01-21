@@ -1,6 +1,8 @@
 spring:
   application:
     name: server
+    
+  #db configuration data
   datasource:
     url: jdbc:mysql://localhost:3308/Test
     username: root
@@ -24,3 +26,25 @@ spring:
   logging:
     level:
       org.springframework.mail: DEBUG
+      hibernate:
+        #FOR TESTING ONLY!!!
+        format_sql: true
+    #FOR TESTING ONLY!!!
+    show-sql: true
+
+  data:
+    web:
+      pageable:
+        page-parameter: pagina
+        size-parameter: tamano
+    sort:
+      sort-parameter: orden
+
+server:
+  error:
+    include-stacktrace: never
+
+
+#  mvc:
+#    servlet:
+#      path: /api/v1/demo
