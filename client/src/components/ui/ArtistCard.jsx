@@ -1,14 +1,19 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Play } from 'lucide-react'
-import PropTypes from 'prop-types'
+import { Card, CardContent } from "@/components/ui/card";
+import { Play } from 'lucide-react';
+import PropTypes from 'prop-types';
 
-export function ArtistCard({ name, image, followers,children }) {
+export function ArtistCard({ 
+  name, 
+  image = "/placeholder.svg", 
+  followers, 
+  children 
+}) {
   return (
     <Card className="group relative overflow-hidden transition-all hover:bg-orange-100/10">
       <CardContent className="p-4">
         <div className="relative aspect-square w-full overflow-hidden rounded-md">
           <img
-            src={image || "/placeholder.svg"}
+            src={image}
             alt={name}
             className="object-cover w-full h-full transition-all group-hover:scale-105"
           />
@@ -28,15 +33,13 @@ export function ArtistCard({ name, image, followers,children }) {
         {children && <div>{children}</div>}
       </CardContent>
     </Card>
-  )
+  );
 }
+
 ArtistCard.propTypes = {
   name: PropTypes.string.isRequired,
-  image: PropTypes.string,
+  image: PropTypes.string, // Ahora image tiene un valor predeterminado en la función
   followers: PropTypes.string.isRequired,
   children: PropTypes.node, // Validación opcional para los children
 };
 
-ArtistCard.defaultProps = {
-  image: "/placeholder.svg",
-};
