@@ -41,7 +41,7 @@ export default function LoginForm() {
         email: values.email,
         password: values.password,
       });
-
+      console.log(import.meta.VITE_API_URL);
       if (response.status === 200) {
         // Successful login
         toast({
