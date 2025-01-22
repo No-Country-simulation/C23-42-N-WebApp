@@ -1,16 +1,18 @@
-package org.nctry.server.user.dto.request;
+package org.nctry.server.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.nctry.server.user.enums.Country;
 
 import java.time.LocalDate;
 
 @Setter
 @Getter
-public class dtoUser_create {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class RegisterRequest {
     @NotBlank(message = "¡El campo usuario no puede estar vacio!")
     @Pattern(regexp = "^[a-zA-Z0-9\\-_]+$", message = "¡Sólo caracteres alfanúmericos y los caracteres especiales: - _ son aceptados!")
     private String username;
@@ -31,5 +33,5 @@ public class dtoUser_create {
 
     @NotNull(message = "¡El campo país no puede estar vacio!")
     @Pattern(regexp = "^[A-Za-z]+$", message = "¡Sólo letras son aceptadas!")
-    private Country country;
+    private String country;
 }

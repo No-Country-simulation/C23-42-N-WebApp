@@ -35,5 +35,6 @@ public enum Country {
     TURQUIA,
     IRAN,
     PAKISTAN,
-    NUEVA_ZELANDA
+    NUEVA_ZELANDA,
+    PERU
 }
