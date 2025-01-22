@@ -96,7 +96,7 @@ export default function RegisterForm() {
       setIsLoading(false);
     }
   }
-
+  //test
   return (
     <div className="flex flex-col lg:flex-row min-h-screen h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8 w-full gap-4 bg-orangePrimary/10">
       <div className="w-full flex justify-center">
