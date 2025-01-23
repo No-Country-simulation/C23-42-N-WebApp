@@ -16,6 +16,7 @@ import org.nctry.server.user.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,17 +40,12 @@ public class AuthService {
 
     @Transactional
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        //User userFound = userRepository.findByUserFullData_Email(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-        // Verifica que la contraseña ingresada coincide con la almacenada
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Contraseña incorrecta");
-        }
+        UserDetailsWrapper userFound = (UserDetailsWrapper) authentication.getPrincipal();
 
-        userDetailsWrapper = new UserDetailsWrapper(user);
-
-        String token = jwtService.getToken(userDetailsWrapper);
+        String token = jwtService.getToken(userFound);
         return AuthResponse.builder()
                 .token(token)
                 .build();
@@ -61,9 +57,9 @@ public class AuthService {
         Optional<User> resUser = userRepository.findByUsernameOrUserFullData_Email(request.getUsername(), request.getEmail());
 
         if (resUser.isPresent())
-            throw new RuntimeException("User already exists"); //aqui va excepcion personalizada
+            throw new RuntimeException("El nombre de usuario o correo proporcionado ya existen, intente con otro"); //aqui va excepcion personalizada
 
-        String countryName = request.getCountry();
+        /*String countryName = request.getCountry();
         Country country;
 
         try {
@@ -75,12 +71,12 @@ public class AuthService {
 
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid country: " + countryName);
-        }
+        }*/
 
         UserFulldata userFulldata = UserFulldata.builder()
                 .email(request.getEmail())
-                .birthday(request.getBirthday())
-                .country(country)
+                //.birthday(request.getBirthday())
+                //.country(country)
                 .role(1)
                 .confirmationCode(generateVerificationCode())
                 .verificationCodeExpiresAt(LocalDateTime.now().plusMinutes(1440)) //expira en 1 dia
@@ -93,9 +89,8 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
-        sendVerificationEmail(user);
-
         userRepository.save(user);
+        sendVerificationEmail(user);
 
         userDetailsWrapper = new UserDetailsWrapper(user);
 
