@@ -25,7 +25,7 @@ public class DemoController {
 
         UserDetailsWrapper currentUser = (UserDetailsWrapper) authentication.getPrincipal(); //getPrincipal retornar la clase que implementa UserDetails
         System.out.println(currentUser.toString());
-        return "Bienvenido " +  currentUser.getUsername();
+        return "Bienvenido " +  currentUser.getUsername() + "\n Correo: " + currentUser.getEmail();
     }
 
 }
