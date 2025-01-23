@@ -1,6 +1,7 @@
 
 package org.nctry.server.config;
 
+import org.nctry.server.auth.services.CustomUserDetailsService;
 import org.nctry.server.user.UserDetailsWrapper;
 import org.nctry.server.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class ApplicationConfig {
 
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    public ApplicationConfig(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public ApplicationConfig(CustomUserDetailsService customUserDetailsService) {
+        //this.userRepository = userRepository;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Bean
@@ -33,7 +36,8 @@ public class ApplicationConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailService());
+        //authenticationProvider.setUserDetailsService(userDetailService());
+        authenticationProvider.setUserDetailsService(customUserDetailsService);
 
         authenticationProvider.setPasswordEncoder(passwordEncoder());
 
@@ -45,11 +49,11 @@ public class ApplicationConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+    /*@Bean
     public UserDetailsService userDetailService() {
         return username -> userRepository.findByUsername(username)
                 .map(UserDetailsWrapper::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found exception"));
-    }
+    }*/
 
 }
