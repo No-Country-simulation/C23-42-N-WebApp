@@ -21,7 +21,9 @@ export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  // Actualizar el esquema para incluir username
   const formSchema = z.object({
+    username: z.string().min(1, { message: "Debe introducir su nombre de usuario" }),
     email: z.string().email({ message: "Formato de email incorrecto" }),
     password: z.string().min(1, { message: "Debe introducir su contraseña" }),
   });
@@ -29,6 +31,7 @@ export default function LoginForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
     },
@@ -37,7 +40,8 @@ export default function LoginForm() {
   async function onSubmit(values) {
     setIsLoading(true);
     try {
-      const response = await axiosInstance.post("/login", {
+      const response = await axiosInstance.post("/auth/login", {
+        username: values.username,
         email: values.email,
         password: values.password,
       });
@@ -125,6 +129,30 @@ export default function LoginForm() {
               className="space-y-4"
               noValidate
             >
+              {/* Campo Username */}
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-left w-full block font-medium">
+                      Nombre de Usuario
+                      <span className="text-red-500"> *</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        {...field}
+                        className="placeholder:text-gray-500 placeholder:opacity-50"
+                        placeholder="Nombre de usuario"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-left w-full block font-medium" />
+                  </FormItem>
+                )}
+              />
+
+              {/* Campo Email */}
               <FormField
                 control={form.control}
                 name="email"
@@ -146,6 +174,8 @@ export default function LoginForm() {
                   </FormItem>
                 )}
               />
+
+              {/* Campo Password */}
               <FormField
                 control={form.control}
                 name="password"
@@ -162,6 +192,7 @@ export default function LoginForm() {
                   </FormItem>
                 )}
               />
+
               <Button
                 type="submit"
                 variant="btnOrange"
@@ -177,3 +208,4 @@ export default function LoginForm() {
     </div>
   );
 }
+
