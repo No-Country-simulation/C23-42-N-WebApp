@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserDetailsWrapper implements UserDetails {
 
-    private final User user;
+    private User user;
 
     public UserDetailsWrapper(User user) {
         this.user = user;
@@ -39,6 +39,10 @@ public class UserDetailsWrapper implements UserDetails {
     @Override
     public String getUsername() {
         return user.getUsername();
+    }
+
+    public String getEmail() {
+        return user.getUserFullData().getEmail();
     }
 
     @Override
