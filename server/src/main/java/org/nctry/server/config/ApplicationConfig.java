@@ -2,7 +2,7 @@
 package org.nctry.server.config;
 
 import org.nctry.server.user.UserDetailsWrapper;
-import org.nctry.server.user.repository.UserRepository;
+import org.nctry.server.user.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class ApplicationConfig {
 
-    private final UserRepository userRepository;
+    private final IUserRepository userRepository;
 
     @Autowired
-    public ApplicationConfig(UserRepository userRepository) {
+    public ApplicationConfig(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

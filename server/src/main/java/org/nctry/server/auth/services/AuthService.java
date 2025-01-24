@@ -12,7 +12,7 @@ import org.nctry.server.user.UserDetailsWrapper;
 import org.nctry.server.user.enums.Country;
 import org.nctry.server.user.model.User;
 import org.nctry.server.user.model.UserFulldata;
-import org.nctry.server.user.repository.UserRepository;
+import org.nctry.server.user.repository.IUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +28,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
+    private final IUserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
