@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
 
 
-
+        cachedPageable = pageable;
         Page<User> users = userRepository.findAll(pageable);
         cachedData = users;
         System.out.println("Cargo la data nueva");
