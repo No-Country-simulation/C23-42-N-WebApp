@@ -53,6 +53,8 @@ public class AuthService {
             String token = jwtService.getToken(userFound);
             return AuthResponse.builder()
                     .token(token)
+                    .username(userFound.getUsername())
+                    .email(userFound.getEmail())
                     .build();
         } catch (BadCredentialsException ex) {
             throw new IncorrectPasswordException("La contraseña es incorrecta");
@@ -106,6 +108,8 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(jwtService.getToken(userDetailsWrapper))
+                .username(userDetailsWrapper.getUsername())
+                .email(userDetailsWrapper.getEmail())
                 .build();
     }
 
