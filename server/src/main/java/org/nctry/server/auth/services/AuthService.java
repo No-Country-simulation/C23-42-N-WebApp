@@ -1,27 +1,30 @@
 package org.nctry.server.auth.services;
 
-import jakarta.mail.MessagingException;
+//import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.nctry.server.Exceptions.user.IncorrectPasswordException;
+import org.nctry.server.Exceptions.user.UserAlreadyExistsException;
 import org.nctry.server.auth.dto.AuthResponse;
 import org.nctry.server.auth.dto.LoginRequest;
 import org.nctry.server.auth.dto.RegisterRequest;
-import org.nctry.server.auth.dto.VerifyUser;
-import org.nctry.server.email.EmailService;
+//import org.nctry.server.auth.dto.VerifyUser;
+import org.nctry.server.auth.email.EmailService;
 import org.nctry.server.user.UserDetailsWrapper;
 import org.nctry.server.user.model.User;
 import org.nctry.server.user.model.UserFulldata;
 import org.nctry.server.user.repository.IUserFullData;
 import org.nctry.server.user.repository.IUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.Random;
+//import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -35,21 +38,25 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    private final EmailService emailService;
+    //private final EmailService emailService;
 
     private UserDetailsWrapper userDetailsWrapper;
 
     @Transactional
     public AuthResponse login(LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        //User userFound = userRepository.findByUserFullData_Email(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            //User userFound = userRepository.findByUserFullData_Email(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-        UserDetailsWrapper userFound = (UserDetailsWrapper) authentication.getPrincipal();
+            UserDetailsWrapper userFound = (UserDetailsWrapper) authentication.getPrincipal();
 
-        String token = jwtService.getToken(userFound);
-        return AuthResponse.builder()
-                .token(token)
-                .build();
+            String token = jwtService.getToken(userFound);
+            return AuthResponse.builder()
+                    .token(token)
+                    .build();
+        } catch (BadCredentialsException ex) {
+            throw new IncorrectPasswordException("La contraseña es incorrecta");
+        }
     }
 
     @Transactional
@@ -58,7 +65,7 @@ public class AuthService {
         Optional<User> resUser = iUserRepository.findByUsernameOrUserFullData_Email(request.getUsername(), request.getEmail());
 
         if (resUser.isPresent())
-            throw new RuntimeException("El nombre de usuario o correo proporcionado ya existen, intente con otro"); //aqui va excepcion personalizada
+            throw new UserAlreadyExistsException("El usuario " + resUser.get().getUsername() + " o " + resUser.get().getUserFullData().getEmail() + " ya fueron registrados");
 
         /*String countryName = request.getCountry();
         Country country;
@@ -79,9 +86,10 @@ public class AuthService {
                 //.birthday(request.getBirthday())
                 //.country(country)
                 .role(1)
-                .confirmationCode(generateVerificationCode())
-                .verificationCodeExpiresAt(LocalDateTime.now().plusMinutes(1440)) //expira en 1 dia
-                .enabled(false)
+                .confirmationCode(null)
+                //.verificationCodeExpiresAt(LocalDateTime.now().plusMinutes(1440)) //expira en 1 dia
+                .verificationCodeExpiresAt(null)
+                .enabled(true)
                 .build();
 
         User user = User.builder()
@@ -92,7 +100,7 @@ public class AuthService {
 
         iUserFullData.save(userFulldata);
         iUserRepository.save(user);
-        sendVerificationEmail(user);
+        //sendVerificationEmail(user);
 
         userDetailsWrapper = new UserDetailsWrapper(user);
 
@@ -101,7 +109,7 @@ public class AuthService {
                 .build();
     }
 
-    public void verifyUser(VerifyUser verifyUser) {
+    /*public void verifyUser(VerifyUser verifyUser) {
         Optional<User> optionalUser = iUserRepository.findByUserFullData_Email(verifyUser.getEmail());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -169,5 +177,5 @@ public class AuthService {
         Random random = new Random();
         int code = random.nextInt(900000) + 100000;
         return String.valueOf(code);
-    }
+    }*/
 }
