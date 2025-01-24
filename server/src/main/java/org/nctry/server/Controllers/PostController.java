@@ -14,6 +14,7 @@ import static org.nctry.server.Controllers.ApiPaths.ROOT;
 @RestController
 @RequestMapping(ROOT + "/post")
 public class PostController {
+    /*
     private final PostService postService;
     private final SongService songService;
     private Map<String, Object> data;
@@ -25,7 +26,7 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Object> createPost(@RequestBody/*PostDTO*/ String postDTO) {
+    public ResponseEntity<Object> createPost(@RequestBody/*PostDTO*/ /*String postDTO) {
         data = new HashMap<>();
         postService.savePost();
         return ResponseEntity.ok(data);
@@ -68,4 +69,5 @@ public class PostController {
         postService.getPostBySong(song);
         return ResponseEntity.ok(data);
     }
+    */
 }

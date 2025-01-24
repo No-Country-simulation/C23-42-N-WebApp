@@ -1,5 +1,8 @@
 package org.nctry.server.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,11 +20,14 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id", updatable = false)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) // Reference to the UserFullData table
-    @JoinColumn(name = "userId", referencedColumnName = "id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JsonManagedReference
+    @ToString.Exclude
     private UserFulldata userFullData;
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
     @Column(name = "password", nullable = false)

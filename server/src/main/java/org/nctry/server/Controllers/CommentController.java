@@ -12,6 +12,7 @@ import static org.nctry.server.Controllers.ApiPaths.ROOT;
 @RestController
 @RequestMapping(ROOT + "/comment")
 public class CommentController {
+    /*
     private final CommentService commentService;
     private Map<String, Object> data;
 
@@ -74,5 +75,5 @@ public class CommentController {
         data = new HashMap<>();
         commentService.deleteComment(commentId);
         return ResponseEntity.ok(data);
-    }
+    */
 }

@@ -11,6 +11,7 @@ import org.nctry.server.email.EmailService;
 import org.nctry.server.user.UserDetailsWrapper;
 import org.nctry.server.user.model.User;
 import org.nctry.server.user.model.UserFulldata;
+import org.nctry.server.user.repository.IUserFullData;
 import org.nctry.server.user.repository.IUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,11 +27,10 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class AuthService {
 
-<<<<<<< HEAD
+
     private final IUserRepository iUserRepository;
-=======
-    private final IUserRepository userRepository;
->>>>>>> develop
+    private final IUserFullData iUserFullData;
+
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -90,6 +90,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
+        iUserFullData.save(userFulldata);
         iUserRepository.save(user);
         sendVerificationEmail(user);
 

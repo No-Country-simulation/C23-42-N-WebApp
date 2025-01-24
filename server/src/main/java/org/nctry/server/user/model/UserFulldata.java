@@ -1,5 +1,6 @@
 package org.nctry.server.user.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.nctry.server.model.EntityClass;
@@ -12,9 +13,9 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @Builder
+@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "users_full_data")
 public class UserFulldata extends EntityClass {
@@ -50,4 +51,12 @@ public class UserFulldata extends EntityClass {
     private boolean enabled;
     @Column(name = "verification_expiration")
     private LocalDateTime verificationCodeExpiresAt;
+
+    @OneToOne(mappedBy = "userFullData", cascade = CascadeType.ALL, optional = true)
+    @JsonBackReference
+    @ToString.Exclude
+    private User user;
+
+
+
 }

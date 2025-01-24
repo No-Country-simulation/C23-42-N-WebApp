@@ -13,6 +13,7 @@ import static org.nctry.server.Controllers.ApiPaths.ROOT;
 @RestController
 @RequestMapping(ROOT + "/reaction")
 public class ReactionController {
+    /*
     private final ReactionService reactionService;
     private Map<String, Object> data;
 
@@ -62,4 +63,6 @@ public class ReactionController {
         reactionService.deleteReaction(reactionId);
         return ResponseEntity.ok(data);
     }
+    */
+
 }

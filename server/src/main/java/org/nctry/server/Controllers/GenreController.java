@@ -13,6 +13,7 @@ import static org.nctry.server.Controllers.ApiPaths.ROOT;
 @RestController
 @RequestMapping(ROOT + "/genre")
 public class GenreController {
+    /*
     private final GenreService genreService;
     private Map<String, Object> data;
 
@@ -89,5 +90,5 @@ public class GenreController {
         data = new HashMap<>();
         genreService.deleteGenre(genreId);
         return ResponseEntity.ok(data);
-    }
+    }*/
 }

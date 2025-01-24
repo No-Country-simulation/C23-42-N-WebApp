@@ -13,6 +13,7 @@ import static org.nctry.server.Controllers.ApiPaths.ROOT;
 @RestController
 @RequestMapping(ROOT + "/playlist")
 public class PlaylistController {
+    /*
     private final PlaylistService playlistService;
     private Map<String, Object> data;
 
@@ -70,4 +71,6 @@ public class PlaylistController {
         playlistService.removeSongFromPlaylist(playlistId, songId);
         return ResponseEntity.ok(data);
     }
+
+     */
 }

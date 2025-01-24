@@ -20,7 +20,7 @@ public class ArtistController {
     public ArtistController(ArtistService artistService) {
         this.artistService = artistService;
     }
-
+    /*
     @PostMapping("/create")
     public ResponseEntity<Object> createArtist(@RequestBody String artistDTO){
         data = new HashMap<>();
@@ -69,4 +69,6 @@ public class ArtistController {
         artistService.deleteArtist(artistId);
         return ResponseEntity.ok(data);
     }
+    
+     */
 }
