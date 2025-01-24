@@ -16,11 +16,13 @@ public class SecurityConfig {
 
     private final JwtRequestFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final CustomCorsConfiguration customCorsConfiguration;
 
     @Autowired
-    public SecurityConfig(JwtRequestFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider) {
+    public SecurityConfig(JwtRequestFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider, CustomCorsConfiguration customCorsConfiguration) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationProvider = authenticationProvider;
+        this.customCorsConfiguration = customCorsConfiguration;
     }
 
     //cadena de filtros = middleware
@@ -34,6 +36,7 @@ public class SecurityConfig {
                                     .requestMatchers("/auth/**").permitAll()
                                     .anyRequest().authenticated()
                         )
+                .cors(c -> c.configurationSource(customCorsConfiguration))
                 .sessionManagement(sessionManager ->
                             sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         )

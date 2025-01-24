@@ -25,13 +25,13 @@ public class RegisterRequest {
     @Email(message= "¡El email ingresado no es válido!")
     private String email;
 
-    @NotNull(message = "¡El campo fecha de nacimiento no puede estar vacio!")
+    /*@NotNull(message = "¡El campo fecha de nacimiento no puede estar vacio!")
     @Pattern(regexp = "^[0-9\\-/-]+$", message = "¡Sólo números son aceptados para el campo fecha de nacimiento")
     @JsonFormat(pattern = "dd-MM-yyyy")
     @Past(message = "La fecha de nacimiento debe ser pasado")
-    private LocalDate birthday;
+    private LocalDate birthday;*/
 
-    @NotNull(message = "¡El campo país no puede estar vacio!")
+    /*@NotNull(message = "¡El campo país no puede estar vacio!")
     @Pattern(regexp = "^[A-Za-z]+$", message = "¡Sólo letras son aceptadas!")
-    private String country;
+    private String country;*/
 }

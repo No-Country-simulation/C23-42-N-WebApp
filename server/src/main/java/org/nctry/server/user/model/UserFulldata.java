@@ -26,7 +26,8 @@ public class UserFulldata extends EntityClass {
     private String name;
     @Column(name = "last_name", length = 50)
     private String lastName;
-    @Column(name = "birthday", nullable = false)
+    //@Column(name = "birthday", nullable = false)
+    @Column(name = "birthday")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthday;
     @Column(name = "phone", unique = true, length = 20)
@@ -34,7 +35,8 @@ public class UserFulldata extends EntityClass {
     @Column(name = "email", nullable = false, unique = true, length = 80)
     private String email;
     @Enumerated(EnumType.STRING)
-    @Column(name = "country", nullable = false, length = 14)
+    //@Column(name = "country", nullable = false, length = 14)
+    @Column(name = "country", length = 14)
     private Country country;
     @Column(name = "city", length = 50)
     private String city;

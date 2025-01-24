@@ -11,7 +11,7 @@ import lombok.*;
 public class LoginRequest {
     @NotBlank(message = "¡El campo usuario no puede estar vacio!")
     @Pattern(regexp = "^[a-zA-Z0-9\\-_]+$", message = "¡Sólo caracteres alfanúmericos y los caracteres especiales: - _ son aceptados!")
-    String username;
+    String email;
     @NotBlank(message = "¡El campo contraseña no puede estar vacio!")
     @Pattern(regexp = "^[a-zA-Z0-9\\-_.:]+$", message = "¡Sólo caracteres alfanúmericos y los caracteres especiales: - _ . : son aceptados!")
     String password;
