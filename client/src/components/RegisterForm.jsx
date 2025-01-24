@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card, CardContent, CardHeader } from "./ui/card";
-import { Link, redirect } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import {
   Form,
   FormControl,
@@ -19,6 +19,7 @@ import { useToast } from "../hooks/use-toast";
 
 export default function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const { toast } = useToast();
 
@@ -63,11 +64,9 @@ export default function RegisterForm() {
     console.log(values, "here");
     try {
       const response = await axiosInstance.post("/auth/register", {
-        data: {
-          username: values.username,
-          email: values.email,
-          password: values.password,
-        },
+        username: values.username,
+        email: values.email,
+        password: values.password,
       });
 
       toast({
@@ -76,9 +75,10 @@ export default function RegisterForm() {
         variant: "success",
       });
 
-      if (response.status === 200) {
-        redirect("/login");
-      }
+      navigate("/login");
+      // if (response.status === 200) {
+      //   redirect("/login");
+      // }
 
       console.log(values);
     } catch (error) {
