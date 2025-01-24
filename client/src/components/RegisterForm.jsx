@@ -60,10 +60,9 @@ export default function RegisterForm() {
 
   async function onSubmit(values) {
     setIsLoading(true);
-    console.log(values);
-
+    console.log(values, "here");
     try {
-      const response = await axiosInstance.post("/users", {
+      const response = await axiosInstance.post("/auth/register", {
         data: {
           username: values.username,
           email: values.email,
@@ -216,6 +215,7 @@ export default function RegisterForm() {
                     </FormItem>
                   )}
                 />
+
                 <Button
                   type="submit"
                   variant="btnOrange"
