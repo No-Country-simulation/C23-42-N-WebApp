@@ -1,10 +1,11 @@
 package org.nctry.server.auth.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.nctry.server.auth.dto.AuthResponse;
 import org.nctry.server.auth.dto.LoginRequest;
 import org.nctry.server.auth.dto.RegisterRequest;
-import org.nctry.server.auth.dto.VerifyUser;
+//import org.nctry.server.auth.dto.VerifyUser;
 import org.nctry.server.auth.services.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +18,16 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(value = "login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginRequest request) { //valid es para validar el formato del json en funcion del dto;
         return ResponseEntity.ok(authService.login(request));
     }
 
     @PostMapping(value = "register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthResponse> register(@RequestBody @Valid RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
-    @PostMapping(value = "verify")
+    /*@PostMapping(value = "verify")
     public ResponseEntity<?> verifyUser(@RequestBody VerifyUser verifyUserDto) {
         try {
             authService.verifyUser(verifyUserDto);
@@ -45,5 +46,5 @@ public class AuthController {
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
+    }*/
 }
