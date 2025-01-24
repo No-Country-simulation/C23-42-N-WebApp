@@ -9,15 +9,12 @@ import org.nctry.server.auth.dto.RegisterRequest;
 import org.nctry.server.auth.dto.VerifyUser;
 import org.nctry.server.email.EmailService;
 import org.nctry.server.user.UserDetailsWrapper;
-import org.nctry.server.user.enums.Country;
 import org.nctry.server.user.model.User;
 import org.nctry.server.user.model.UserFulldata;
-import org.nctry.server.user.repository.UserRepository;
+import org.nctry.server.user.repository.IUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +26,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
+    private final IUserRepository iUserRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -54,7 +51,7 @@ public class AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest request) { //agregar verificaicon email
 
-        Optional<User> resUser = userRepository.findByUsernameOrUserFullData_Email(request.getUsername(), request.getEmail());
+        Optional<User> resUser = iUserRepository.findByUsernameOrUserFullData_Email(request.getUsername(), request.getEmail());
 
         if (resUser.isPresent())
             throw new RuntimeException("El nombre de usuario o correo proporcionado ya existen, intente con otro"); //aqui va excepcion personalizada
@@ -89,7 +86,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
-        userRepository.save(user);
+        iUserRepository.save(user);
         sendVerificationEmail(user);
 
         userDetailsWrapper = new UserDetailsWrapper(user);
@@ -100,7 +97,7 @@ public class AuthService {
     }
 
     public void verifyUser(VerifyUser verifyUser) {
-        Optional<User> optionalUser = userRepository.findByUserFullData_Email(verifyUser.getEmail());
+        Optional<User> optionalUser = iUserRepository.findByUserFullData_Email(verifyUser.getEmail());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (user.getUserFullData().getVerificationCodeExpiresAt().isBefore(LocalDateTime.now()))
@@ -110,7 +107,7 @@ public class AuthService {
                 user.getUserFullData().setEnabled(true);
                 user.getUserFullData().setConfirmationCode(null);
                 user.getUserFullData().setVerificationCodeExpiresAt(null);
-                userRepository.save(user);
+                iUserRepository.save(user);
             }
             else {
                 throw new RuntimeException("Codigo de verificación invalido");
@@ -122,7 +119,7 @@ public class AuthService {
     }
 
     public void resendVerificationCode(String email) {
-        Optional<User> optionalUser = userRepository.findByUserFullData_Email(email);
+        Optional<User> optionalUser = iUserRepository.findByUserFullData_Email(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
 
@@ -132,7 +129,7 @@ public class AuthService {
             user.getUserFullData().setConfirmationCode(generateVerificationCode());
             user.getUserFullData().setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(1440)); //expira en 1 dia
             sendVerificationEmail(user);
-            userRepository.save(user);
+            iUserRepository.save(user);
         }
         else {
             throw new RuntimeException("Usuario no encontrado");
