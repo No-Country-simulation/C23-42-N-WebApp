@@ -55,11 +55,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void addReactionToComment(Long commentId, Long reactionId, Long userId) {
-        /*
-            TODO:
-                Añador una reaccion al comentario seleccionado
-                Vincular la reaccion a los USER
-        */
+    public void addReactionToComment(Long commentId, String reaction, Long userId) {
+
     }
 }

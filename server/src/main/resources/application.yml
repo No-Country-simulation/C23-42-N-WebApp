@@ -6,26 +6,16 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3308/Test
     username: root
-    password: root
+    password: 5N6a2h3u0e8l6G-1
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${SUPPORT_EMAIL}
-    password: ${APP_PASSWORD}
-    default-encoding: UTF-8
-    properties:
-      mail:
-        smtp:
-          auth: true
-        starttls:
-          enable: true
+      ddl-auto: create-drop
   logging:
     level:
-      org.springframework.mail: DEBUG
+      org:
+        springframework:
+          mail: DEBUG
       hibernate:
         #FOR TESTING ONLY!!!
         format_sql: true
