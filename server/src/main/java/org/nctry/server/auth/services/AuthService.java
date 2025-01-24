@@ -26,7 +26,11 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class AuthService {
 
+<<<<<<< HEAD
     private final IUserRepository iUserRepository;
+=======
+    private final IUserRepository userRepository;
+>>>>>>> develop
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
