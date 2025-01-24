@@ -1,5 +1,4 @@
-import { ArtistGrid } from "@/components/ArtistGrid";
-import React from "react";
+import { ArtistGrid } from "@/components/dashboard/ArtistGrid";
 
 export const Home = () => {
   return (

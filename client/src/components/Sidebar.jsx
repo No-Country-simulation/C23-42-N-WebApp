@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { User, Home, Search, Library, Plus } from "lucide-react";
+import { Home, Search, Library, Plus } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { PlaylistItem } from "./PlaylistItem";
+import { PlaylistItem } from "./dashboard/PlaylistItem";
 import { useState } from "react";
 
 export function Sidebar() {

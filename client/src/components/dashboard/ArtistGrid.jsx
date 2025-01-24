@@ -1,4 +1,4 @@
-import { ArtistCard } from '@/components/ui/ArtistCard';
+import { ArtistCard } from '@/components/ui/artist-card';
 
 // Sample data
 const artists = [

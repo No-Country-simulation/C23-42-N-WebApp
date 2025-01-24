@@ -1,24 +1,31 @@
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { Button } from "./ui/button"
-import { Input } from "./ui/input"
-import { Card, CardContent, CardHeader } from "./ui/card"
-import { Link } from "react-router-dom"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import axiosInstance from "../services/axiosInstance"
-import { useToast } from "../hooks/use-toast"
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
+import { Card, CardContent, CardHeader } from "../../ui/card";
+import { Link } from "react-router-dom";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../ui/form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axiosInstance from "../../../lib/axiosInstance";
+import { useToast } from "../../../hooks/use-toast";
 
 export default function LoginForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   // Actualizar el esquema para incluir username
   const formSchema = z.object({
     email: z.string().email({ message: "Formato de email incorrecto" }),
     password: z.string().min(1, { message: "Debe introducir su contraseña" }),
-  })
+  });
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -26,27 +33,27 @@ export default function LoginForm() {
       email: "",
       password: "",
     },
-  })
+  });
 
   async function onSubmit(values) {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const response = await axiosInstance.post("/auth/login", {
         email: values.email,
         password: values.password,
-      })
-      console.log(import.meta.VITE_API_URL)
+      });
+      console.log(import.meta.VITE_API_URL);
       if (response.status === 200) {
         // Successful login
         toast({
           title: "Inicio de sesión exitoso",
           description: "Bienvenido a la plataforma",
           variant: "success",
-        })
+        });
         // Save login timestamp (optional)
-        localStorage.setItem("lastLogin", new Date().toISOString())
+        localStorage.setItem("lastLogin", new Date().toISOString());
         // Redirect to dashboard
-        window.location.href = "/dashboard"
+        window.location.href = "/dashboard";
       }
     } catch (error) {
       if (error.response) {
@@ -55,30 +62,31 @@ export default function LoginForm() {
             form.setError("email", {
               type: "manual",
               message: "No existe una cuenta con este correo",
-            })
-            break
+            });
+            break;
           case 401:
             form.setError("password", {
               type: "manual",
               message: "Contraseña incorrecta",
-            })
-            break
+            });
+            break;
           default:
             toast({
               title: "Error",
-              description: "Hubo un problema al iniciar sesión. Intente más tarde.",
+              description:
+                "Hubo un problema al iniciar sesión. Intente más tarde.",
               variant: "destructive",
-            })
+            });
         }
       } else {
         toast({
           title: "Error",
           description: "Hubo un problema al iniciar sesión. Intente más tarde.",
           variant: "destructive",
-        })
+        });
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -89,20 +97,35 @@ export default function LoginForm() {
           <CardHeader className="space-y-2 text-center">
             <div className="flex justify-center">
               <Link to="/">
-                <img src="/logo-musync3.png" alt="Logo" width={48} height={48} className="h-12 w-12" />
+                <img
+                  src="/logo-musync3.png"
+                  alt="Logo"
+                  width={48}
+                  height={48}
+                  className="h-12 w-12"
+                />
               </Link>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-orangePrimary">Iniciar sesión</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-orangePrimary">
+              Iniciar sesión
+            </h1>
             <p className="text-sm text-gray-600">
               ¿No tienes una cuenta?{" "}
-              <Link to="/register" className="text-indigo-500 font-bold hover:underline">
+              <Link
+                to="/register"
+                className="text-indigo-500 font-bold hover:underline"
+              >
                 Regístrate
               </Link>
             </p>
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" noValidate>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+                noValidate
+              >
                 {/* Email field */}
                 <FormField
                   control={form.control}
@@ -144,7 +167,12 @@ export default function LoginForm() {
                   )}
                 />
 
-                <Button type="submit" variant="btnOrange" className="w-full" disabled={isLoading}>
+                <Button
+                  type="submit"
+                  variant="btnOrange"
+                  className="w-full"
+                  disabled={isLoading}
+                >
                   {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
                 </Button>
               </form>
@@ -162,6 +190,5 @@ export default function LoginForm() {
         </p>
       </div>
     </div>
-  )
+  );
 }
-
