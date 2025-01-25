@@ -1,7 +1,7 @@
 import { Sidebar } from "./Sidebar";
-import { Player } from "./Player";
+import { Player } from "./dashboard/Player";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Header } from "./Header";
+import { Header } from "./dashboard/Header";
 import { Outlet } from "react-router-dom";
 
 export function Layout() {
