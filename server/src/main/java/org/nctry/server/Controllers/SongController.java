@@ -13,6 +13,8 @@ import static org.nctry.server.Controllers.ApiPaths.ROOT;
 @RestController
 @RequestMapping(ROOT + "/song")
 public class SongController {
+    /*
+}
     private final SongService songService;
     private Map<String, Object> data;
 
@@ -77,5 +79,5 @@ public class SongController {
         data = new HashMap<>();
         songService.deleteSong();
         return null;
-    }
+    */
 }

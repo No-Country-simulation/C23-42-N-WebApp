@@ -35,30 +35,31 @@ public class UserController {
     {
         data = new HashMap<>();
 
+        data.put("Users: ", userService.findAll(pageNumber, pageSize, sortBy, sortDir));
+
         data.put("pageNumber: ", pageNumber);
         data.put("pageSize: ", pageSize);
         data.put("sortBy: ", sortBy);
         data.put("sortDir: ", sortDir);
-        data.put("Users: ", userService.findAll(pageNumber, pageSize, sortBy, sortDir));
 
         return ResponseEntity.ok(data);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get/username")
     public ResponseEntity<Object> getUserByUsername(@RequestParam String username) {
         data = new HashMap<>();
         data.put("Usuario Encontrado: ", userService.findByUsername(username));
         return ResponseEntity.ok(data);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get/email")
     public ResponseEntity<Object> getUserByEmail(@RequestParam String email) {
         data = new HashMap<>();
         data.put("Usuario Encontrado: ", userService.findByEmail(email));
         return ResponseEntity.ok(data);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get/id")
     public ResponseEntity<Object> getUserByUsername(@RequestParam Long id) {
         data = new HashMap<>();
         data.put("UserFound", userService.findById(id));

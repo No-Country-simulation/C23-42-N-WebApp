@@ -14,5 +14,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponse extends GeneralResponse {
-    private List<dtoUser_displayPublicData> content;
+    private List<UserDTO> content;
 }
