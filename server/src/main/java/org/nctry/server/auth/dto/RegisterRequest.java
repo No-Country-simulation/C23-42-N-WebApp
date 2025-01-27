@@ -14,11 +14,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class RegisterRequest {
     @NotBlank(message = "¡El campo usuario no puede estar vacio!")
-    @Pattern(regexp = "^[a-zA-Z0-9\\-_]+$", message = "¡Sólo caracteres alfanúmericos y los caracteres especiales: - _ son aceptados!")
+    @Pattern(
+            regexp = "^[a-zA-Z0-9\\-_.:!@#$%^&*]{4,16}$",
+            message = "El nombre de usuario debe tener entre 4 y 16 caracteres, y solo se permiten los caracteres especiales: - _ . : ! @ # $ % ^ & * son aceptados!"
+    )
     private String username;
 
     @NotBlank(message = "¡El campo contraseña no puede estar vacio!")
-    @Pattern(regexp = "^[A-Za-z0-9.,\\-_$]+$", message = "¡Sólo caracteres alfanúmericos y los caracteres especiales: . , - _ son aceptados!")
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z0-9\\-_.:!@#$%^&*]{8,16}$",
+            message = "La contraseña debe tener entre 8 y 20 caracteres, al menos una letra mayúscula, una letra minúscula, un dígito, y sólo caracteres alfanuméricos o los especiales: - _ . : ! @ # $ % ^ & *"
+    )
     private String password;
 
     @NotBlank(message = "¡El campo email no puede estar vacio!")

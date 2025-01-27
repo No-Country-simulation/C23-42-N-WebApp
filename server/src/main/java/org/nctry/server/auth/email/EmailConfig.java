@@ -1,16 +1,17 @@
-package org.nctry.server.email;
+package org.nctry.server.auth.email;
 
+/*
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import java.util.Properties;
+import java.util.Properties;*/
 
-@Configuration
+//@Configuration
 public class EmailConfig {
-    @Value("${spring.mail.username}")
+    /*@Value("${spring.mail.username}")
     private String emailusername;
 
     @Value("${spring.mail.password}")
@@ -31,5 +32,5 @@ public class EmailConfig {
         props.put("mail.debug", "true");
 
         return mailSender;
-    }
+    }*/
 }
