@@ -43,6 +43,11 @@ public class UserServiceImpl implements UserService {
             return mapPageToUserResponse(cachedData, pageNumber, pageSize);
         }
 
+
+
+
+        cachedPageable = pageable;
+
         Page<User> users = userRepository.findAll(pageable);
         cachedData = users;
         System.out.println("Cargo la data nueva");
