@@ -17,7 +17,7 @@ import { useRegisterForm } from "./hooks/useRegisterForm";
 export default function RegisterForm() {
   const { isLoading, form, onSubmit } = useRegisterForm();
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8 w-full gap-4 bg-orangePrimary/10">
+    <div className="flex flex-col lg:flex-row min-h-screen sm:h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8 w-full gap-4 bg-orangePrimary/10">
       <div className="w-full flex justify-center">
         <Card className="w-[500px]">
           <CardHeader className="space-y-2 text-center">
@@ -52,39 +52,39 @@ export default function RegisterForm() {
                 className="space-y-4"
                 noValidate
               >
-
-                {
-                  registerFormContent.map((elem) => {
-                    return (
-                      <FormField
-                        key={elem.name} 
-                        control={form.control}
-                        name={elem.name}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-left w-full block font-medium">
-                              {elem.label}
-                              <span className="text-red-500"> *</span>
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type={elem.type} 
-                                {...field}
-                                className="placeholder:text-gray-500 placeholder:opacity-50"
-                              />
-                            </FormControl>
-                            <FormMessage
-                              className={`text-left w-full block font-medium ${form.formState.errors[elem.name] ? "text-red-500" : "text-gray-500"
-                                }`}
-                            >
-                              {elem.placeholder}
-                            </FormMessage>
-                          </FormItem>
-                        )}
-                      />
-                    );
-                  })
-                }
+                {registerFormContent.map((elem) => {
+                  return (
+                    <FormField
+                      key={elem.name}
+                      control={form.control}
+                      name={elem.name}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-left w-full block font-medium">
+                            {elem.label}
+                            <span className="text-red-500"> *</span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type={elem.type}
+                              {...field}
+                              className="placeholder:text-gray-500 placeholder:opacity-50"
+                            />
+                          </FormControl>
+                          <FormMessage
+                            className={`text-left w-full block font-medium ${
+                              form.formState.errors[elem.name]
+                                ? "text-red-500"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {elem.placeholder}
+                          </FormMessage>
+                        </FormItem>
+                      )}
+                    />
+                  );
+                })}
 
                 <Button
                   type="submit"
