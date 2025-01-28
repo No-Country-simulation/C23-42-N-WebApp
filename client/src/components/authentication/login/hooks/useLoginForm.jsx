@@ -7,12 +7,15 @@ import { useNavigate } from "react-router-dom";
 import { loginSchema } from "@/schemas/loginSchema";
 import Cookies from "js-cookie";
 import { saveTokenToCookies } from "@/lib/saveTokenToCookies";
+import { useUserStore } from "@/store/useUserStore";
 
 export function useLoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { loginUser } = AuthService();
   const navigate = useNavigate();
+
+  const { setUser } = useUserStore();
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -32,9 +35,8 @@ export function useLoginForm() {
         description: "Bienvenido a la plataforma",
         variant: "successBtn",
       });
-      console.log(data);
+      setUser(data);
       saveTokenToCookies(data.token);
-
       navigate("/");
     } catch (error) {
       toast({
