@@ -74,7 +74,7 @@ export function ChipsCarousel() {
 
     
       {/* Gradient overlay for scroll indication */}
-      <div className="absolute right-16 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+
     </div>
   );
 }
