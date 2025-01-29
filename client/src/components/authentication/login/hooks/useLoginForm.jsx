@@ -5,7 +5,6 @@ import { useToast } from "@/hooks/use-toast";
 import { AuthService } from "@/services/AuthService.js";
 import { useNavigate } from "react-router-dom";
 import { loginSchema } from "@/schemas/loginSchema";
-import Cookies from "js-cookie";
 import { saveTokenToCookies } from "@/lib/saveTokenToCookies";
 import { useUserStore } from "@/store/useUserStore";
 

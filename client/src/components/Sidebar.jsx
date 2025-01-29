@@ -88,9 +88,7 @@ export function Sidebar() {
           className={({ isActive }) =>
             `flex items-center gap-3 rounded-3xl px-4 py-3 text-muted-foreground transition-colors hover:bg-orangePrimary/30 ${isActive ? "bg-orangePrimary/10" : ""}`
           }
-          onClick={() => {
-            logoutUser();
-          }}
+          onClick={logoutUser}
         >
           <LogOut className="size-6" />
           Logout
