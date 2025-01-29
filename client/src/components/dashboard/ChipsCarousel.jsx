@@ -1,8 +1,12 @@
 /* eslint-disable */
 import { useState, useRef, useEffect } from "react";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { Chip } from "@/components/ui/Chip";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import useEmblaCarousel from "embla-carousel-react";
+import { Chip } from "../ui/chip";
 
 const categories = [
   { id: 1, label: "All" },
@@ -15,9 +19,8 @@ const categories = [
   { id: 8, label: "Electronic" },
   { id: 9, label: "Sad" },
   { id: 10, label: "Party" },
-  { id: 11, label: "Romance"},
+  { id: 11, label: "Romance" },
   { id: 12, label: "Energetic" },
-
 ];
 
 export function ChipsCarousel() {
@@ -72,12 +75,7 @@ export function ChipsCarousel() {
         </CarouselContent>
       </Carousel>
 
-    
       {/* Gradient overlay for scroll indication */}
-
     </div>
   );
 }
-
-
-
