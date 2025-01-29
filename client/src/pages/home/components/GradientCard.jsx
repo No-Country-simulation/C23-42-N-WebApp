@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Vibrant } from "node-vibrant/browser";
 
-export const GradientCard = ({ children, image }) => {
+export const GradientCard = ({ children, image, isLoading }) => {
   const [gradient, setGradient] = useState("");
 
   useEffect(() => {
