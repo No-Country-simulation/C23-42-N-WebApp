@@ -12,8 +12,6 @@ export const GradientCard = ({ children, image }) => {
       .then((palette) => {
         const vibrantSwatch = palette.Vibrant;
         const darkMutedSwatch = palette.DarkMuted;
-        console.log(vibrantSwatch, "vibrantSwatch");
-        console.log(darkMutedSwatch._rgb, "darkMutedSwatch");
         if (vibrantSwatch && darkMutedSwatch) {
           setGradient(
             `linear-gradient(to right, rgb(${vibrantSwatch._rgb.join(",")}), rgb(${darkMutedSwatch._rgb.join(",")}))`,
@@ -27,10 +25,9 @@ export const GradientCard = ({ children, image }) => {
     <div>
       <div
         style={{
-          width: "170px",
           background: gradient,
         }}
-        className="rounded-3xl cursor-pointer"
+        className="rounded-3xl cursor-pointer w-full h-full p-4"
       >
         {children}
       </div>
