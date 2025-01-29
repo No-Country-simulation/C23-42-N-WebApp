@@ -5,7 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.aspectj.weaver.bcel.ClassPathManager;
+import org.nctry.server.user.UserDetailsWrapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,16 +19,21 @@ public class JwtService {
     //debe ir en otro lado
     private static final String SECRET_KEY = "wH6GhRz6Ut3mQ5Y8Y7vY12AbK36Z8LNkA9wXg87qwH6GhRz6Ut3mQ5Y8Y7vY12AbK36Z8LNkA9wXg87q";
 
-    public String getToken(UserDetails user) {
-        return getToken(new HashMap<>(), user);
+    public String getToken(UserDetailsWrapper user) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("username", user.getUsername());
+        extraClaims.put("email", user.getEmail());
+        return getToken(extraClaims, user);
     }
 
     private String getToken(Map<String, Object> extraClaims, UserDetails user) {
+        long now = System.currentTimeMillis();
+        long  expirationTime = 1000 * 60 * 60 * 24;
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + expirationTime))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -40,6 +45,10 @@ public class JwtService {
 
     public String getUsernameFromToken(String token) {
         return getClaim(token, Claims::getSubject);
+    }
+
+    public String getEmailFromToken(String token) {
+        return getClaim(token, claims -> claims.get("email", String.class));
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

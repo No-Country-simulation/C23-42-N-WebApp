@@ -1,17 +1,21 @@
 package org.nctry.server.user.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 import org.nctry.server.model.EntityClass;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.nctry.server.user.enums.Country;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Builder
 @ToString(callSuper = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "users_full_data")
 public class UserFulldata extends EntityClass {
@@ -23,14 +27,17 @@ public class UserFulldata extends EntityClass {
     private String name;
     @Column(name = "last_name", length = 50)
     private String lastName;
-    @Column(name = "birthday", nullable = false)
+    //@Column(name = "birthday", nullable = false)
+    @Column(name = "birthday")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthday;
     @Column(name = "phone", unique = true, length = 20)
     private String phone;
     @Column(name = "email", nullable = false, unique = true, length = 80)
     private String email;
     @Enumerated(EnumType.STRING)
-    @Column(name = "country", nullable = false, length = 14)
+    //@Column(name = "country", nullable = false, length = 14)
+    @Column(name = "country", length = 14)
     private Country country;
     @Column(name = "city", length = 50)
     private String city;
@@ -40,4 +47,16 @@ public class UserFulldata extends EntityClass {
     private String confirmationCode;
     @Column(name = "recovery_code", length = 100)
     private String recoveryCode;
+
+    private boolean enabled;
+    @Column(name = "verification_expiration")
+    private LocalDateTime verificationCodeExpiresAt;
+
+    @OneToOne(mappedBy = "userFullData", cascade = CascadeType.ALL, optional = true)
+    @JsonBackReference
+    @ToString.Exclude
+    private User user;
+
+
+
 }

@@ -1,6 +1,6 @@
 package org.nctry.server.user;
 
-import org.nctry.server.user.entity.User;
+import org.nctry.server.user.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,15 +10,19 @@ import java.util.List;
 
 public class UserDetailsWrapper implements UserDetails {
 
-    private final User user;
+    private User user;
 
     public UserDetailsWrapper(User user) {
         this.user = user;
     }
 
+    public User getUser() {
+        return this.user;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String role = switch (this.user.getRole()) {
+        String role = switch (this.user.getUserFullData().getRole()) {
             case 1 -> "ROLE_USER";
             case 2 -> "ROLE_ADMIN";
             default -> "ROLE_GUEST";
@@ -37,6 +41,10 @@ public class UserDetailsWrapper implements UserDetails {
         return user.getUsername();
     }
 
+    public String getEmail() {
+        return user.getUserFullData().getEmail();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -44,7 +52,7 @@ public class UserDetailsWrapper implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
@@ -54,6 +62,6 @@ public class UserDetailsWrapper implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.user.getUserFullData().isEnabled();
     }
 }
