@@ -1,45 +1,47 @@
-import { ArtistCard } from '@/components/ui/ArtistCard';
+import { GradientCard } from "..";
+import { ArtistCard } from "./ArtistCard";
 
-// Sample data
 const artists = [
   {
     name: "Taylor Swift",
     image: "/images/Taylor.jpg",
-    followers: "100M"
+    followers: "100M",
   },
   {
     name: "Bad Bunny",
     image: "/images/Bad bunny.PNG",
-    followers: "80M"
+    followers: "80M",
   },
   {
     name: "The Weeknd",
     image: "/images/the weeknd.png",
-    followers: "75M"
+    followers: "75M",
   },
   {
     name: "Drake",
     image: "/images/drake.jpg",
-    followers: "70M"
+    followers: "70M",
   },
   {
     name: "Ed Sheeran",
     image: "/images/ed sheeran.jpg",
-    followers: "95M"
+    followers: "95M",
   },
   {
     name: "Ariana Grande",
     image: "/images/ariana grande.jpg",
-    followers: "85M"
-  }
-]
+    followers: "85M",
+  },
+];
 
 export function ArtistGrid() {
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <div className="flex gap-4">
       {artists.map((artist, index) => (
-        <ArtistCard key={index} {...artist} />
+        <GradientCard image={artist.image} key={index}>
+          <ArtistCard key={index} {...artist} />
+        </GradientCard>
       ))}
     </div>
-  )
+  );
 }
