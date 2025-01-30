@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import { Home } from "./pages/home";
 import { Feed } from "./pages/Feed";
 
+
 function App() {
   return (
     <Router>
@@ -20,7 +21,7 @@ function App() {
 
         <Route element={<PrivateRoute />}>
           <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
             <Route path="/feed" element={<Feed />} />
           </Route>
         </Route>

@@ -1,10 +1,6 @@
-/* eslint-disable */
-import { useState, useRef, useEffect } from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import { useState, useEffect, useCallback } from "react";
+import { Chip } from "@/components/ui/Chip";
+import { Skeleton } from "@/components/ui/skeleton";
 import useEmblaCarousel from "embla-carousel-react";
 import { Chip } from "../ui/chip";
 
@@ -21,61 +17,88 @@ const categories = [
   { id: 10, label: "Party" },
   { id: 11, label: "Romance" },
   { id: 12, label: "Energetic" },
+  { id: 13, label: "Reggae" },
+  { id: 14, label: "Blues" },
+  { id: 15, label: "Country" },
+  { id: 16, label: "Indie" },
+  { id: 17, label: "Metal" },
+  { id: 18, label: "R&B" },
+  { id: 19, label: "Latin" },
+  { id: 20, label: "Alternative" },
+  // Más categorías aquí si es necesario...
 ];
 
 export function ChipsCarousel() {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "start",
-    loop: false,
-  });
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(false);
-
-  const onSelect = useRef(() => {});
-
-  onSelect.current = () => {
-    if (!emblaApi) return;
-    setCanScrollPrev(emblaApi.canScrollPrev());
-    setCanScrollNext(emblaApi.canScrollNext());
-  };
+  const [emblaRef, embla] = useEmblaCarousel({ align: "start", loop: false });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!emblaApi) return;
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
-    onSelect.current();
-    emblaApi.on("select", onSelect.current);
-    emblaApi.on("reInit", onSelect.current);
+  // Funciones para mover el carrusel
+  const scrollPrev = useCallback(() => {
+    if (embla) embla.scrollPrev();
+  }, [embla]);
 
-    return () => {
-      emblaApi.off("select", onSelect.current);
-      emblaApi.off("reInit", onSelect.current);
-    };
-  }, [emblaApi]);
+  const scrollNext = useCallback(() => {
+    if (embla) embla.scrollNext();
+  }, [embla]);
+
+  if (isLoading) {
+    return (
+      <div className="relative w-full mb-6">
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex">
+            {[...Array(8)].map((_, index) => (
+              <div key={index} className="pl-2 flex-shrink-0">
+                <Skeleton className="h-10 w-24 rounded-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full mb-6">
-      <Carousel
-        opts={{
-          align: "start",
-          loop: false,
-        }}
-        className="w-full"
-      >
-        <CarouselContent className="-ml-2" ref={emblaRef}>
-          {categories.map((category) => (
-            <CarouselItem key={category.id} className="pl-2 basis-auto">
+      {/* Contenedor de botones de navegación */}
+      <div className="flex justify-end mb-2 space-x-2">
+        <button
+          onClick={scrollPrev}
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
+        >
+          {"<"}
+        </button>
+        <button
+          onClick={scrollNext}
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
+        >
+          {">"}
+        </button>
+      </div>
+
+      {/* Carrusel (se mueve con emblaRef) */}
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex">
+          {categories.slice(0, 12).map((category) => (
+            <div key={category.id} className="pl-2 flex-shrink-0">
               <Chip
                 label={category.label}
                 selected={selectedCategory === category.label}
                 onClick={() => setSelectedCategory(category.label)}
               />
-            </CarouselItem>
+            </div>
           ))}
-        </CarouselContent>
-      </Carousel>
-
-      {/* Gradient overlay for scroll indication */}
+        </div>
+      </div>
     </div>
   );
 }
+
+
