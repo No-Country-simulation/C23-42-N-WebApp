@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from "react";
-import { Chip } from "@/components/ui/Chip";
 import { Skeleton } from "@/components/ui/skeleton";
 import useEmblaCarousel from "embla-carousel-react";
 import { Chip } from "../ui/chip";
@@ -68,7 +67,7 @@ export function ChipsCarousel() {
   return (
     <div className="relative w-full mb-6">
       {/* Contenedor de botones de navegación */}
-      <div className="flex justify-end mb-2 space-x-2">
+      {/* <div className="flex justify-end mb-2 space-x-2 bg-orangePrimary">
         <button
           onClick={scrollPrev}
           className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
@@ -81,7 +80,7 @@ export function ChipsCarousel() {
         >
           {">"}
         </button>
-      </div>
+      </div> */}
 
       {/* Carrusel (se mueve con emblaRef) */}
       <div className="overflow-hidden" ref={emblaRef}>
