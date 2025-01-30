@@ -8,7 +8,7 @@ import { Layout } from "./components/Layout";
 import { PrivateRoute } from "./components/PrivateRoute";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
-import { Dashboard } from "./pages/Dashboard";
+import { Home } from "./pages/Home";
 import { Feed } from "./pages/Feed";
 
 
@@ -21,7 +21,7 @@ function App() {
 
         <Route element={<PrivateRoute />}>
           <Route element={<Layout />}>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Home />} />
             <Route path="/feed" element={<Feed />} />
           </Route>
         </Route>

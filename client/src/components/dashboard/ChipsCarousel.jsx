@@ -1,7 +1,8 @@
-/* eslint-disable */
-import { useState, useRef, useEffect } from "react";
+
+import { useState, useEffect } from "react";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Chip } from "@/components/ui/Chip";
+import { Skeleton } from "@/components/ui/skeleton";
 import useEmblaCarousel from "embla-carousel-react";
 
 const categories = [
@@ -15,51 +16,57 @@ const categories = [
   { id: 8, label: "Electronic" },
   { id: 9, label: "Sad" },
   { id: 10, label: "Party" },
-  { id: 11, label: "Romance"},
+  { id: 11, label: "Romance" },
   { id: 12, label: "Energetic" },
-
 ];
 
 export function ChipsCarousel() {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [emblaRef, emblaApi] = useEmblaCarousel({
+  const [emblaRef] = useEmblaCarousel({
     align: "start",
     loop: false,
   });
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(false);
-
-  const onSelect = useRef(() => {});
-
-  onSelect.current = () => {
-    if (!emblaApi) return;
-    setCanScrollPrev(emblaApi.canScrollPrev());
-    setCanScrollNext(emblaApi.canScrollNext());
-  };
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!emblaApi) return;
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
 
-    onSelect.current();
-    emblaApi.on("select", onSelect.current);
-    emblaApi.on("reInit", onSelect.current);
+    return () => clearTimeout(timer);
+  }, []);
 
-    return () => {
-      emblaApi.off("select", onSelect.current);
-      emblaApi.off("reInit", onSelect.current);
-    };
-  }, [emblaApi]);
+  if (isLoading) {
+    return (
+      <div className="relative w-full mb-6">
+        <Carousel className="w-full">
+          <CarouselContent className="-ml-2">
+            {[...Array(8)].map((_, index) => (
+              <CarouselItem key={index} className="pl-2 basis-auto">
+                <Skeleton className="h-10 w-24 rounded-full" />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full mb-6">
-      <Carousel
-        opts={{
-          align: "start",
-          loop: false,
-        }}
-        className="w-full"
-      >
-        <CarouselContent className="-ml-2" ref={emblaRef}>
+      {/* Contenedor de botones de navegación alineados a la derecha */}
+      <div className="flex justify-end mb-2 space-x-2">
+        <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
+          {"<"}
+        </button>
+        <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md">
+          {">"}
+        </button>
+      </div>
+
+      {/* Carrusel */}
+      <Carousel ref={emblaRef} className="w-full">
+        <CarouselContent className="-ml-2">
           {categories.map((category) => (
             <CarouselItem key={category.id} className="pl-2 basis-auto">
               <Chip
@@ -71,13 +78,6 @@ export function ChipsCarousel() {
           ))}
         </CarouselContent>
       </Carousel>
-
-    
-      {/* Gradient overlay for scroll indication */}
-
     </div>
   );
 }
-
-
-
