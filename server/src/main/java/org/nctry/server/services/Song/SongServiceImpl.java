@@ -64,14 +64,6 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public /*List<SongDTO>*/ void getAllSongByGenre(String genre) {
-        /*
-            TODO:
-                Mismo manejo de que getAllSong
-        */
-    }
-
-    @Override
     public void likeSong(Long userId, Long songId) {
         /*
             TODO:

@@ -1,6 +1,8 @@
 package org.nctry.server.Controllers;
 
+import org.nctry.server.Utilities.Pages.PaginationUtils;
 import org.nctry.server.services.Genre.GenreService;
+import org.nctry.server.song.dto.response.dtoGenre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +15,7 @@ import static org.nctry.server.Controllers.ApiPaths.ROOT;
 @RestController
 @RequestMapping(ROOT + "/genre")
 public class GenreController {
-    /*
+
     private final GenreService genreService;
     private Map<String, Object> data;
 
@@ -23,23 +25,35 @@ public class GenreController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Object> createGenre(@RequestBody String genreDTO) {
+    public ResponseEntity<Object> createGenre(@RequestBody dtoGenre dtoGenre) {
         data = new HashMap<>();
-        genreService.saveGenre(genreDTO);
+        data.put("genre", genreService.saveGenre(dtoGenre));
         return ResponseEntity.ok(data);
     }
 
+    /*
     @PutMapping("/update")
     public ResponseEntity<Object> updateGenre(@RequestBody String genreDTO) {
         data = new HashMap<>();
         genreService.saveGenre(genreDTO);
         return ResponseEntity.ok(data);
     }
+    */
 
     @GetMapping("/get")
-    public ResponseEntity<Object> getAllGenre() {
+    public ResponseEntity<Object> getAllGenre(
+            @RequestParam(value = "pageNumber", defaultValue = PaginationUtils.DEFECT_PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = PaginationUtils.DEFECT_PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = PaginationUtils.DEFECT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = PaginationUtils.DEFECT_SORT_DIRECTION, required = false) String sortDir
+    ) {
         data = new HashMap<>();
-        genreService.getAllGenres();
+        data.put("DATA:", genreService.getAllGenres(
+                pageNumber,
+                pageSize,
+                sortBy,
+                sortDir
+        ));
         return ResponseEntity.ok(data);
     }
 
@@ -57,12 +71,14 @@ public class GenreController {
         return ResponseEntity.ok(data);
     }
 
+    /*
     @PutMapping("/assign")
     public ResponseEntity<Object> assignGenreToArtist(@RequestParam Long genreId, @RequestParam Long artistId) {
         data = new HashMap<>();
         genreService.assignGenreToArtist(genreId, artistId);
         return ResponseEntity.ok(data);
     }
+    */
 
     @PutMapping("/unassign")
     public ResponseEntity<Object> unassignGenreToSong(@RequestParam Long genreId, @RequestParam Long songId) {
@@ -78,7 +94,7 @@ public class GenreController {
         return ResponseEntity.ok(data);
     }
 
-    @PutMapping("/unassign")
+   /* @PutMapping("/unassign")
     public ResponseEntity<Object> unassignGenreToArtist(@RequestParam Long genreId, @RequestParam Long artistId) {
         data = new HashMap<>();
         genreService.unassignGenreFromArtist(genreId, artistId);
