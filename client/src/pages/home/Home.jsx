@@ -5,6 +5,7 @@ import { artists } from "@/lib/artists";
 
 export const Home = () => {
   return (
+    
     <div className="px-10">
       <ScrollArea className="h-[60vh]  rounded-md w-[95%] overflow-auto">
         <div className="mb-8">

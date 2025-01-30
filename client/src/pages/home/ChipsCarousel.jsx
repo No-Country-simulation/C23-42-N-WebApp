@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import useEmblaCarousel from "embla-carousel-react";
-import { Chip } from "../ui/chip";
+import { Chip } from "../../components/ui/chip";
 
 const categories = [
   { id: 1, label: "All" },
@@ -54,7 +54,7 @@ export function ChipsCarousel() {
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
             {[...Array(8)].map((_, index) => (
-              <div key={index} className="pl-2 flex-shrink-0">
+              <div key={index} className="pl-2 ">
                 <Skeleton className="h-10 w-24 rounded-full" />
               </div>
             ))}

@@ -3,7 +3,7 @@ import { Player } from "./dashboard/Player";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Header } from "./dashboard/Header";
 import { Outlet } from "react-router-dom";
-import { ChipsCarousel } from "./dashboard/ChipsCarousel";
+import { ChipsCarousel } from "../pages/home/ChipsCarousel";
 
 export function Layout() {
   return (
