@@ -1,6 +1,6 @@
 package org.nctry.server.Controllers;
 
-import org.nctry.server.Utilities.Pagination;
+import org.nctry.server.Utilities.Pages.PaginationUtils;
 import org.nctry.server.services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,19 +28,14 @@ public class UserController {
 
     @GetMapping("/get")
     public ResponseEntity<Object> getAll(
-            @RequestParam(value = "pageNumber", defaultValue = Pagination.DEFECT_PAGE_NUMBER, required = false) int pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = Pagination.DEFECT_PAGE_SIZE, required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = Pagination.DEFECT_SORT_BY, required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = Pagination.DEFECT_SORT_DIRECTION, required = false) String sortDir)
+            @RequestParam(value = "pageNumber", defaultValue = PaginationUtils.DEFECT_PAGE_NUMBER, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = PaginationUtils.DEFECT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = PaginationUtils.DEFECT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = PaginationUtils.DEFECT_SORT_DIRECTION, required = false) String sortDir)
     {
         data = new HashMap<>();
 
-        data.put("Users: ", userService.findAll(pageNumber, pageSize, sortBy, sortDir));
-
-        data.put("pageNumber: ", pageNumber);
-        data.put("pageSize: ", pageSize);
-        data.put("sortBy: ", sortBy);
-        data.put("sortDir: ", sortDir);
+        data.put("DATA :", userService.findAll(pageNumber, pageSize, sortBy, sortDir));
 
         return ResponseEntity.ok(data);
     }
@@ -52,15 +47,15 @@ public class UserController {
         return ResponseEntity.ok(data);
     }
 
-    @GetMapping("/get/email")
+    /*@GetMapping("/get/email")
     public ResponseEntity<Object> getUserByEmail(@RequestParam String email) {
         data = new HashMap<>();
         data.put("Usuario Encontrado: ", userService.findByEmail(email));
         return ResponseEntity.ok(data);
-    }
+    }*/
 
     @GetMapping("/get/id")
-    public ResponseEntity<Object> getUserByUsername(@RequestParam Long id) {
+    public ResponseEntity<Object> getUserById(@RequestParam Long id) {
         data = new HashMap<>();
         data.put("UserFound", userService.findById(id));
         return ResponseEntity.ok(data);

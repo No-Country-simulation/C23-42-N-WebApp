@@ -2,9 +2,10 @@ package org.nctry.server.services.User;
 
 import org.nctry.server.DTO.UserDTO;
 import org.nctry.server.DTO.UserFullDataDTO;
-import org.nctry.server.DTO.UserResponse;
 import org.nctry.server.Exceptions.ResourceNotFoundException;
-import org.nctry.server.user.dto.response.dtoUser_displayPublicData;
+import org.nctry.server.Utilities.Pages.SortUtils;
+import org.nctry.server.Utilities.Pages.mappers.ResponseMapper;
+import org.nctry.server.Utilities.Pages.response.GeneralResponse;
 import org.nctry.server.user.model.User;
 import org.nctry.server.user.model.UserFulldata;
 import org.nctry.server.user.repository.IUserFullData;
@@ -22,8 +23,9 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final IUserRepository userRepository;
     private final IUserFullData userFullData;
-    private Page<User> cachedData = Page.empty();
-    private Pageable cachedPageable = Pageable.unpaged();
+
+    //Mapper
+    private ResponseMapper responseMapper;
 
     @Autowired
     public UserServiceImpl(IUserRepository userRepository, IUserFullData userFullData) {
@@ -33,30 +35,25 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserResponse findAll(int pageNumber, int pageSize, String sortBy, String sortDir) {
+    public GeneralResponse findAll(int pageNumber, int pageSize, String sortBy, String sortDir) {
+        responseMapper = ResponseMapper.INSTANCE;
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        if (!cachedData.isEmpty() && cachedPageable.equals(pageable)) {
-            System.out.println("Cargo la data existente");
-            return mapPageToUserResponse(cachedData, pageNumber, pageSize);
-        }
-
-
-
-
-        cachedPageable = pageable;
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "User"));
 
         Page<User> users = userRepository.findAll(pageable);
-        cachedData = users;
-        System.out.println("Cargo la data nueva");
 
-        return mapPageToUserResponse(users, pageNumber, pageSize);
+        return responseMapper.mapToResponse(
+                users.getContent().stream().map(this::mapToUserDTO).toList(),
+                users.getNumber(),
+                users.getSize(),
+                users.getTotalElements(),
+                users.isLast());
     }
 
     @Override
-    public dtoUser_displayPublicData findByUsername(String username) {
+    public UserDTO findByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                     new ResourceNotFoundException("User", "username", username)
                 );
@@ -65,11 +62,11 @@ public class UserServiceImpl implements UserService {
                 ()-> new ResourceNotFoundException("User", "id", user.getId().toString())
         );
 
-        return new dtoUser_displayPublicData(user, userFulldata);
+        return mapToUserDTO(user);
     }
 
     @Override
-    public dtoUser_displayPublicData findById(Long Id) {
+    public UserDTO findById(Long Id) {
         User user = userRepository.findById(Id).orElseThrow( () ->
                 new ResourceNotFoundException("User", "id", Id.toString())
         );
@@ -78,37 +75,21 @@ public class UserServiceImpl implements UserService {
                 ()-> new ResourceNotFoundException("User", "id", user.getId().toString())
         );
 
-        return new dtoUser_displayPublicData(user, userFulldata);
+        return mapToUserDTO(user);
     }
 
-    @Override
+    /*@Override
     public dtoUser_displayPublicData findByEmail(String email) {
-        /*User user = userRepository.findByEmail(email).orElseThrow( () ->
+        *//*User user = userRepository.findByEmail(email).orElseThrow( () ->
                 new ResourceNotFoundException("User", "id", email)
         );
 
-
-
         UserFulldata userFulldata = userFullData.findById(user.getId()).orElseThrow(
                 ()-> new ResourceNotFoundException("User", "id", user.getId().toString())
-        );*/
+        );*//*
 
         return null;//new dtoUser_displayPublicData(user, userFulldata);
-    }
-
-    private UserResponse mapPageToUserResponse(Page<User> users, int pageNumber, int pageSize) {
-        List<User> usersList = users.getContent();
-        List<UserDTO> content = usersList.stream().map(this::mapToUserDTO).toList();
-
-        UserResponse userResponse = new UserResponse();
-        userResponse.setContent(content);
-        userResponse.setPageNumber(pageNumber);
-        userResponse.setPageSize(pageSize);
-        userResponse.setTotalElements(users.getTotalElements());
-        userResponse.setLast(users.isLast());
-
-        return userResponse;
-    }
+    }*/
 
     private UserDTO mapToUserDTO(User user){
         UserDTO userDTO = new UserDTO();

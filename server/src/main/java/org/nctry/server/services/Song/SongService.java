@@ -7,6 +7,5 @@ public interface SongService {
     void getSongById(Long id);
     void /*List<SongDTO>*/ getAllSong();
     void /*List<SongDTO>*/ getAllSongByName(String name);
-    void /*List<SongDTO>*/ getAllSongByGenre(String genre);
     void likeSong(Long userId, Long songId);
 }
