@@ -58,7 +58,7 @@ export function ChipsCarousel() {
   return (
     <div className="w-full mb-6 mr-36 relative">
       <Carousel className="w-full">
-        <h2 className="text-xl font-semibold mb-4 text-gray-400">Géneros</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-400">Genres</h2>
         <div className="absolute top-0 right-12">
           <CarouselPrevious className="hidden md:flex" />
           <CarouselNext className="hidden md:flex" />
