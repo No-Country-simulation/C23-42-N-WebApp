@@ -1,15 +1,20 @@
 package org.nctry.server.services.Genre;
 
-import java.util.List;
+import org.nctry.server.Utilities.Pages.response.GeneralResponse;
+import org.nctry.server.song.dto.response.dtoGenre;
+import org.nctry.server.song.dto.response.dtoPlaylist;
+import org.nctry.server.song.dto.response.dtoSong;
 
 public interface GenreService {
-    void saveGenre(String genreDTO);
-    void deleteGenre(Long genreDTO);
-    List<String> getAllGenres();
-    void assignGenreToSong(Long genreId, Long songId);
-    void unassignGenreFromSong(Long genreId, Long songId);
-    void assignGenreToPlaylist(Long genreId, Long playlistId);
-    void unassignGenreFromPlaylist(Long genreId, Long playlistId);
-    void assignGenreToArtist(Long genreId, Long artistId);
-    void unassignGenreFromArtist(Long genreId, Long artistId);
+    dtoGenre saveGenre(dtoGenre genreDTO);
+    //void deleteGenre(Long genreDTO);
+    GeneralResponse getAllGenres(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
+    GeneralResponse getSongsByGenre(Long genreId, Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
+    dtoSong assignGenreToSong(Long genreId, Long songId);
+    dtoSong unassignGenreFromSong(Long genreId, Long songId);
+    dtoPlaylist assignGenreToPlaylist(Long genreId, Long playlistId);
+    dtoPlaylist unassignGenreFromPlaylist(Long genreId, Long playlistId);
+
+    //void assignGenreToArtist(Long genreId, Long artistId);
+    //void unassignGenreFromArtist(Long genreId, Long artistId);
 }

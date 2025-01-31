@@ -1,6 +1,6 @@
-package org.nctry.server.Utilities;
+package org.nctry.server.Utilities.Pages;
 
-public class Pagination {
+public class PaginationUtils {
     public static final String DEFECT_PAGE_NUMBER = "0";
     public static final String DEFECT_PAGE_SIZE = "10";
     public static final String DEFECT_SORT_BY = "id";
