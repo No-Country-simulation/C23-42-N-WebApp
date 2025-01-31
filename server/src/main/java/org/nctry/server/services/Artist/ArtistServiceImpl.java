@@ -10,6 +10,7 @@ import org.nctry.server.song.dto.response.dtoArtist;
 import org.nctry.server.song.model.Artist;
 import org.nctry.server.song.repository.IArtistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +19,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArtistServiceImpl implements ArtistService {
     private final IArtistRepository artistRepository;
-
-    private SortUtils sortUtils;
 
     @Autowired
     public ArtistServiceImpl(IArtistRepository artistRepository) {
@@ -31,6 +30,7 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     @Override
+    @Cacheable("Saved_Artist")
     public dtoArtist saveArtist(dtoArtist dtoArtist) {
         artistMapper = ArtistMapper.INSTANCE;
         Artist artist = artistMapper.dtoArtistToArtist(dtoArtist);
@@ -40,6 +40,7 @@ public class ArtistServiceImpl implements ArtistService {
 
 
     @Override
+    @Cacheable("All_Artists")
     public GeneralResponse getAllArtists(
             Integer pageNumber,
             Integer pageSize,

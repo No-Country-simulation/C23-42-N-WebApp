@@ -47,6 +47,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Cacheable
     public dtoGenre saveGenre(dtoGenre genreDTO) {
         genreMapper = GenreMapper.INSTANCE;
         Genre genre = genreMapper.dtoGenreToGenre(genreDTO);

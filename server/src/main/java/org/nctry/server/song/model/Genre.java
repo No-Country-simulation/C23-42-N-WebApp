@@ -1,5 +1,6 @@
 package org.nctry.server.song.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -24,8 +25,10 @@ public class Genre extends EntityClass {
     private  String description;
 
     @ManyToMany(mappedBy = "genres")
+    @JsonBackReference
     private Set<Song> songs;
 
     @ManyToMany(mappedBy = "genres")
+    @JsonBackReference
     private Set<Playlist> playlists;
 }

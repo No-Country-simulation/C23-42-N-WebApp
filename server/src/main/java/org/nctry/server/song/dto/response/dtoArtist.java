@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.nctry.server.user.enums.Country;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -14,4 +15,5 @@ public class dtoArtist {
     private  String coverPicture;
     private Country country;
     private String bio;
+    private Set<dtoSong> songs;
 }
