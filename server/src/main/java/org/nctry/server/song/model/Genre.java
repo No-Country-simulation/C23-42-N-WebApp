@@ -18,9 +18,9 @@ import java.util.Set;
 @Table(name = "genres")
 public class Genre extends EntityClass {
 
-    @Column(name = "name", unique = true, length = 50)
+    @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
-    @Column(name = "description")
+    @Column(name = "description", nullable = false, length = 100)
     private  String description;
 
     @ManyToMany(mappedBy = "genres")

@@ -31,7 +31,7 @@ public class Song extends EntityClass {
 
     @ManyToMany
     @JoinTable(
-            name = "song_genre_relation",
+            name = "song_genre",
             joinColumns = @JoinColumn(name = "song_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
