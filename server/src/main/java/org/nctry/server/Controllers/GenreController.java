@@ -27,8 +27,8 @@ public class GenreController {
     @PostMapping("/create")
     public ResponseEntity<Object> createGenre(@RequestBody dtoGenre dtoGenre) {
         data = new HashMap<>();
-        data.put("genre", genreService.saveGenre(dtoGenre));
-        return ResponseEntity.ok(data);
+
+        return ResponseEntity.ok(genreService.saveGenre(dtoGenre));
     }
 
     /*
@@ -47,24 +47,39 @@ public class GenreController {
             @RequestParam(value = "sortBy", defaultValue = PaginationUtils.DEFECT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = PaginationUtils.DEFECT_SORT_DIRECTION, required = false) String sortDir
     ) {
-        data = new HashMap<>();
-        data.put("DATA:", genreService.getAllGenres(
+        return ResponseEntity.ok(genreService.getAllGenres(
                 pageNumber,
                 pageSize,
                 sortBy,
                 sortDir
         ));
-        return ResponseEntity.ok(data);
     }
 
-    @PutMapping("/assign")
+    @GetMapping("/get/songs")
+    public ResponseEntity<Object> getAllSongsByGenre(
+            @RequestHeader Long genreId,
+            @RequestParam(value = "pageNumber", defaultValue = PaginationUtils.DEFECT_PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = PaginationUtils.DEFECT_PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = PaginationUtils.DEFECT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = PaginationUtils.DEFECT_SORT_DIRECTION, required = false) String sortDir
+    ) {
+        return ResponseEntity.ok(genreService.getSongsByGenre(
+                genreId,
+                pageNumber,
+                pageSize,
+                sortBy,
+                sortDir
+        ));
+    }
+
+    @PutMapping("/assign/song")
     public ResponseEntity<Object> assignGenreToSong(@RequestParam Long genreId, @RequestParam Long songId) {
         data = new HashMap<>();
         genreService.assignGenreToSong(genreId, songId);
         return ResponseEntity.ok(data);
     }
 
-    @PutMapping("/assign")
+    @PutMapping("/assign/playlist")
     public ResponseEntity<Object> assignGenreToPlaylist(@RequestParam Long genreId, @RequestParam Long playlistId) {
         data = new HashMap<>();
         genreService.assignGenreToPlaylist(genreId, playlistId);
@@ -80,14 +95,14 @@ public class GenreController {
     }
     */
 
-    @PutMapping("/unassign")
+    @PutMapping("/unassign/song")
     public ResponseEntity<Object> unassignGenreToSong(@RequestParam Long genreId, @RequestParam Long songId) {
         data = new HashMap<>();
         genreService.unassignGenreFromSong(genreId, songId);
         return ResponseEntity.ok(data);
     }
 
-    @PutMapping("/unassign")
+    @PutMapping("/unassign/playlist")
     public ResponseEntity<Object> unassignGenreToPlaylist(@RequestParam Long genreId, @RequestParam Long playlistId) {
         data = new HashMap<>();
         genreService.unassignGenreFromPlaylist(genreId, playlistId);

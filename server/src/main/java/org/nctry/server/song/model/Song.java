@@ -1,12 +1,12 @@
 package org.nctry.server.song.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.nctry.server.model.EntityClass;
+
+import java.util.Set;
 
 @Entity
 @Data
@@ -28,4 +28,12 @@ public class Song extends EntityClass {
     private int likes = 0;
     @Column(name = "is_public", nullable = false, columnDefinition = "TINYINT(1) UNSIGNED DEFAULT 1")
     private boolean isPublic = true;
+
+    @ManyToMany
+    @JoinTable(
+            name = "song_genre_relation",
+            joinColumns = @JoinColumn(name = "song_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres;
 }

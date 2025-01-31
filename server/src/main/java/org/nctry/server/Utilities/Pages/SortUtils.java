@@ -6,9 +6,9 @@ import org.springframework.data.domain.Sort;
 
 public class SortUtils {
 
-    public static Sort getSort(Integer pageNumber, Integer pageSize, String sortBy, String sortDir){
+    public static Sort getSort(Integer pageNumber, Integer pageSize, String sortBy, String sortDir, String e){
         if (pageSize > 20) {
-            throw new ResourceNotFoundException("Genres", "pageSize", pageSize.toString());
+            throw new ResourceNotFoundException(e, "pageSize", pageSize.toString());
         }
         return sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
                 ? Sort.by(sortBy).ascending()

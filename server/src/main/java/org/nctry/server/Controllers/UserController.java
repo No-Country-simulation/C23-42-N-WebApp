@@ -47,12 +47,12 @@ public class UserController {
         return ResponseEntity.ok(data);
     }
 
-    @GetMapping("/get/email")
+    /*@GetMapping("/get/email")
     public ResponseEntity<Object> getUserByEmail(@RequestParam String email) {
         data = new HashMap<>();
         data.put("Usuario Encontrado: ", userService.findByEmail(email));
         return ResponseEntity.ok(data);
-    }
+    }*/
 
     @GetMapping("/get/id")
     public ResponseEntity<Object> getUserById(@RequestParam Long id) {

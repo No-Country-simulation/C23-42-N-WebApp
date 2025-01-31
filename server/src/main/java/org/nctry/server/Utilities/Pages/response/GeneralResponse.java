@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GeneralResponse {
-    private List<Object> content;
+    private List<?> content;
     private int pageNumber;
     private int pageSize;
     private long totalElements;
