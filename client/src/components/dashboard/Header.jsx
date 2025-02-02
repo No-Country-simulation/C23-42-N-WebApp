@@ -36,9 +36,9 @@ export function Header() {
         </div>
         <div className="flex items-center gap-4">
           {isLoading ? (
-            <Skeleton className="h-12 w-12 rounded-full shrink-0" />
+            <Skeleton className="h-14 w-14 rounded-full shrink-0" />
           ) : (
-            <Avatar name={user?.username} size="50" round={true} color="#FF5722" className="shrink-0" />
+            <Avatar name={user?.username} size="60" round={true} color="#FF5722" className="shrink-0" />
           )}
           <div className="flex flex-col">
             {isLoading ? (
