@@ -1,6 +1,4 @@
 /* eslint-disable */
-"use client"
-
 import { useState, useEffect } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 import useEmblaCarousel from "embla-carousel-react"
@@ -20,6 +18,7 @@ const categories = [
   { id: 10, label: "Party" },
   { id: 11, label: "Romance" },
   { id: 12, label: "Energetic" },
+  
 ]
 
 export function ChipsCarousel() {
@@ -46,7 +45,7 @@ export function ChipsCarousel() {
         </div>
         <div className="overflow-hidden">
           <div className="flex gap-2">
-            {Array.from({ length: 10 }).map((_, index) => (
+            {Array.from({ length: 12 }).map((_, index) => (
               <Skeleton key={index} className="h-8 w-20 rounded-full flex-shrink-0" />
             ))}
           </div>
@@ -78,6 +77,7 @@ export function ChipsCarousel() {
     </div>
   )
 }
+
 
 
 
