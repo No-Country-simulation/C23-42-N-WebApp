@@ -57,18 +57,18 @@ export function Sidebar() {
 
       <div className="flex-1 bg-card/50 px-6">
         <div className="flex items-center gap-4 px-3 py-4">
-          <div className="flex items-center gap-2">
+          <div className="hidden md:flex col gap-2">
             <Library className="size-6" />
             <span className="font-semibold">Tu Biblioteca</span>
           </div>
           <div className="ml-auto flex items-center gap-2">
             <button className="rounded-full p-2 hover:bg-orange-100/10">
-              <Plus className="size-5" />
+              <Plus className="hidden md:flex size-5" />
             </button>
           </div>
         </div>
 
-        <ScrollArea className="h-[33vh]">
+        <ScrollArea className="hidden md:flex h-[45vh]">
           <div className="space-y-1 p-2">
             {Array.from({ length: 50 }).map((_, i) => (
               <PlaylistItem
