@@ -9,12 +9,11 @@ import org.nctry.server.Utilities.Pages.response.PaginationResponse;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ResponseMapper {
     ResponseMapper INSTANCE = Mappers.getMapper(ResponseMapper.class);
 
     List<Object> toObjectList(List<?> content);
 
-    // Este es el mapeo genérico para la respuesta
     GeneralResponse mapToResponse(List<?> content, PaginationResponse pagination);
 }

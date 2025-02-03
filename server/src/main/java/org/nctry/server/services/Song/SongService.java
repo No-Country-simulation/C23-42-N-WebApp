@@ -4,8 +4,6 @@ import org.nctry.server.Utilities.Pages.response.GeneralResponse;
 import org.nctry.server.song.dto.response.dtoSong;
 import org.springframework.cache.annotation.Cacheable;
 
-import java.util.List;
-
 public interface SongService {
 
     @Cacheable("all-songs")

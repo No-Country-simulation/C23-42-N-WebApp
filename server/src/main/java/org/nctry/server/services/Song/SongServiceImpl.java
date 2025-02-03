@@ -6,8 +6,6 @@ import org.nctry.server.Utilities.Pages.SortUtils;
 import org.nctry.server.Utilities.Pages.mappers.PaginationMapper;
 import org.nctry.server.Utilities.Pages.mappers.ResponseMapper;
 import org.nctry.server.Utilities.Pages.response.GeneralResponse;
-import org.nctry.server.song.dto.maps.GenreMapper;
-import org.nctry.server.song.dto.maps.PlaylistMapper;
 import org.nctry.server.song.dto.maps.SongMapper;
 import org.nctry.server.song.dto.response.dtoSong;
 import org.nctry.server.song.model.Song;
@@ -31,34 +29,23 @@ public class SongServiceImpl implements SongService {
     private final IPlaylistRepository playlistRepository;
 
     //Mappers
-    private final ResponseMapper responseMapper ;
-    private final PaginationMapper paginationMapper;
-    private final SongMapper songMapper;
-    private final GenreMapper genreMapper;
-    private final PlaylistMapper playlistMapper;
+    private ResponseMapper responseMapper;
+    private PaginationMapper paginationMapper;
+    private SongMapper songMapper;
+
 
     @Autowired
     public SongServiceImpl(
             IGenreRepository genreRepository,
             ISongRepository songRepository,
             IArtistRepository artistRepository,
-            IPlaylistRepository playlistRepository,
-            ResponseMapper responseMapper,
-            PaginationMapper paginationMapper,
-            SongMapper songMapper,
-            GenreMapper genreMapper,
-            PlaylistMapper playlistMapper
+            IPlaylistRepository playlistRepository
             )
     {
         this.genreRepository = genreRepository;
         this.songRepository = songRepository;
         this.artistRepository = artistRepository;
         this.playlistRepository = playlistRepository;
-        this.responseMapper = ResponseMapper.INSTANCE;
-        this.paginationMapper = PaginationMapper.INSTANCE;
-        this.songMapper = SongMapper.INSTANCE;
-        this.genreMapper = GenreMapper.INSTANCE;
-        this.playlistMapper = PlaylistMapper.INSTANCE;
     }
 
     @Override
@@ -70,6 +57,10 @@ public class SongServiceImpl implements SongService {
             String sortDir)
     {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Genre"));
+
+        paginationMapper = paginationMapper.INSTANCE;
+        responseMapper = responseMapper.INSTANCE;
+        songMapper = songMapper.INSTANCE;
 
         Page<Song> songs = songRepository.findAllByIsActiveTrueAndIsPublicTrue(pageable);
 
@@ -97,6 +88,11 @@ public class SongServiceImpl implements SongService {
             String sortBy,
             String sortDir)
     {
+        paginationMapper = paginationMapper.INSTANCE;
+        responseMapper = responseMapper.INSTANCE;
+        songMapper = songMapper.INSTANCE;
+
+
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Song"));
 
         Page<Song> songs = songRepository.findByNameContainingIgnoreCaseAndIsActiveTrueAndIsPublicTrue(name, pageable);
@@ -125,6 +121,10 @@ public class SongServiceImpl implements SongService {
             String sortBy,
             String sortDir)
     {
+        paginationMapper = paginationMapper.INSTANCE;
+        responseMapper = responseMapper.INSTANCE;
+        songMapper = songMapper.INSTANCE;
+
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Song"));
 
         Page<Song> songs = songRepository.findByArtists_NameContainingIgnoreCaseAndIsPublicTrue(artistName, pageable);
@@ -153,6 +153,10 @@ public class SongServiceImpl implements SongService {
             String sortBy,
             String sortDir)
     {
+        paginationMapper = paginationMapper.INSTANCE;
+        responseMapper = responseMapper.INSTANCE;
+        songMapper = songMapper.INSTANCE;
+
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Song"));
 
         Page<Song> songs = songRepository.findByGenres_NameContainingIgnoreCaseAndIsPublicTrue(genreName, pageable);
@@ -175,6 +179,8 @@ public class SongServiceImpl implements SongService {
     @Override
     public dtoSong getSongById(Long id)
     {
+        songMapper = songMapper.INSTANCE;
+
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song", "id", id.toString()));
 
@@ -185,6 +191,8 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public dtoSong saveSong(dtoSong dtoNewSong) {
+        songMapper = songMapper.INSTANCE;
+
         Song newSong = songMapper.dtoSongToSong(dtoNewSong);
         Song savedSong = songRepository.save(newSong);
 
