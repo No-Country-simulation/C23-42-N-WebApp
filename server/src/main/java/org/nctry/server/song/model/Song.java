@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.nctry.server.model.EntityClass;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -46,4 +47,18 @@ public class Song extends EntityClass {
     @JsonBackReference
     private Set<Artist> artists;
 
+    @ElementCollection
+    @CollectionTable(name = "song_likes", joinColumns = @JoinColumn(name = "song_id"))
+    @Column(name = "user_id")
+    private Set<Long> likedByUsers = new HashSet<>();
+
+    // Like method helper
+    public boolean likeSong(Long userId) {
+        if (likedByUsers.contains(userId)) {
+            return false;
+        }
+        likedByUsers.add(userId);
+        likes++;
+        return true;
+    }
 }

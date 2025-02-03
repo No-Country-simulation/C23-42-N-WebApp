@@ -14,4 +14,9 @@ import java.util.List;
 public class GeneralResponse {
     private List<?> content;
     private PaginationResponse pagination;
+    private String message;
+
+    public GeneralResponse(String message) {
+        this.message = message;
+    }
 }

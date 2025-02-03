@@ -30,5 +30,9 @@ public class Genre extends EntityClass {
 
     @ManyToMany(mappedBy = "genres")
     @JsonBackReference
+    private Set<Artist> artists;
+
+    @ManyToMany(mappedBy = "genres")
+    @JsonBackReference
     private Set<Playlist> playlists;
 }
