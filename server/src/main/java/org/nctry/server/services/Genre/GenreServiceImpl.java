@@ -5,6 +5,7 @@ import org.nctry.server.Utilities.Pages.mappers.PaginationMapper;
 import org.nctry.server.Utilities.Pages.mappers.ResponseMapper;
 import org.nctry.server.Utilities.Pages.response.GeneralResponse;
 import org.nctry.server.Exceptions.ResourceNotFoundException;
+import org.nctry.server.minio.services.MinioManager;
 import org.nctry.server.song.dto.maps.GenreMapper;
 import org.nctry.server.song.dto.maps.PlaylistMapper;
 import org.nctry.server.song.dto.maps.SongMapper;
@@ -24,6 +25,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GenreServiceImpl implements GenreService {
 
@@ -31,6 +34,8 @@ public class GenreServiceImpl implements GenreService {
     private final ISongRepository songRepository;
     private final IPlaylistRepository playlistRepository;
 
+    //Minio Manager
+    private final MinioManager minioManager;
 
     //Mappers
     private SongMapper songMapper;
@@ -40,10 +45,11 @@ public class GenreServiceImpl implements GenreService {
     private PaginationMapper paginationMapper;
 
     @Autowired
-    public GenreServiceImpl(IGenreRepository genreRepository, ISongRepository songRepository, IPlaylistRepository playlistRepository) {
+    public GenreServiceImpl(IGenreRepository genreRepository, ISongRepository songRepository, IPlaylistRepository playlistRepository, MinioManager minioManager) {
         this.genreRepository = genreRepository;
         this.songRepository = songRepository;
         this.playlistRepository = playlistRepository;
+        this.minioManager = minioManager;
     }
 
     @Override
@@ -77,7 +83,6 @@ public class GenreServiceImpl implements GenreService {
         paginationMapper = PaginationMapper.INSTANCE;
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Genre"));
-
         Page<Genre> genres = genreRepository.findAll(pageable);
         if (genres.isEmpty()) {
             throw new ResourceNotFoundException("Genre", "page", pageNumber.toString());
@@ -103,6 +108,8 @@ public class GenreServiceImpl implements GenreService {
             String sortDir
     ) {
         responseMapper = ResponseMapper.INSTANCE;
+        songMapper = SongMapper.INSTANCE;
+        paginationMapper = PaginationMapper.INSTANCE;
         Genre genre = genreRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Genre", "name", name));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Song"));
 
@@ -110,6 +117,13 @@ public class GenreServiceImpl implements GenreService {
         if (songs.isEmpty()) {
             throw new ResourceNotFoundException("Song", "page", pageNumber.toString());
         }
+
+        List<Song> modifiedSongs = songs.getContent().stream()
+                .peek(song -> {
+                    song.setCoverPicture(minioManager.getPresignedUrl(song.getCoverPicture()));
+                    song.setSourceUrl(minioManager.getPresignedUrl(song.getSourceUrl()));
+                })
+                .toList();
 
         return responseMapper.mapToResponse(
                 songs.getContent().stream().map(song -> songMapper.songToDtoSong(song)).toList(),

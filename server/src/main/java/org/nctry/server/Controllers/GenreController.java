@@ -27,10 +27,10 @@ public class GenreController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Object> createGenre(@RequestBody dtoGenre dtoGenre) {
+    public ResponseEntity<Object> createGenre(@RequestBody dtoGenre dtoGenre2) {
         data = new HashMap<>();
         data.put("message", "Genre created successfully");
-        data.put("genre", genreService.saveGenre(dtoGenre));
+        data.put("genre", genreService.saveGenre(dtoGenre2));
         return ResponseEntity.ok(data);
     }
 
@@ -60,7 +60,7 @@ public class GenreController {
 
     @GetMapping("/get/songs")
     public ResponseEntity<Object> getAllSongsByGenre(
-            @RequestHeader String genreName,
+            @RequestHeader("genreName") String genreName,
             @RequestParam(value = "pageNumber", defaultValue = PaginationUtils.DEFECT_PAGE_NUMBER, required = false) Integer pageNumber,
             @RequestParam(value = "pageSize", defaultValue = PaginationUtils.DEFECT_PAGE_SIZE, required = false) Integer pageSize,
             @RequestParam(value = "sortBy", defaultValue = PaginationUtils.DEFECT_SORT_BY, required = false) String sortBy,

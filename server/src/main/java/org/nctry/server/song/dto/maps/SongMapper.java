@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 import org.nctry.server.song.dto.response.dtoSong;
 import org.nctry.server.song.model.Song;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface SongMapper {
     SongMapper INSTANCE = Mappers.getMapper(SongMapper.class);
 
