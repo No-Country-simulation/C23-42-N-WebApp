@@ -10,11 +10,8 @@ import org.nctry.server.song.model.Genre;
 public interface GenreMapper {
     GenreMapper INSTANCE = Mappers.getMapper(GenreMapper.class);
 
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "description", source = "description")
+
     dtoGenre genreToDtoGenre(Genre genre);
 
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "description", source = "description")
     Genre dtoGenreToGenre(dtoGenre dtoGenre);
 }

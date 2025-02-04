@@ -1,6 +1,7 @@
 package org.nctry.server.services.Genre;
 
 import org.nctry.server.Utilities.Pages.SortUtils;
+import org.nctry.server.Utilities.Pages.mappers.PaginationMapper;
 import org.nctry.server.Utilities.Pages.mappers.ResponseMapper;
 import org.nctry.server.Utilities.Pages.response.GeneralResponse;
 import org.nctry.server.Exceptions.ResourceNotFoundException;
@@ -36,6 +37,7 @@ public class GenreServiceImpl implements GenreService {
     private GenreMapper genreMapper;
     private ResponseMapper responseMapper;
     private PlaylistMapper playlistMapper;
+    private PaginationMapper paginationMapper;
 
     @Autowired
     public GenreServiceImpl(IGenreRepository genreRepository, ISongRepository songRepository, IPlaylistRepository playlistRepository) {
@@ -45,6 +47,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Cacheable
     public dtoGenre saveGenre(dtoGenre genreDTO) {
         genreMapper = GenreMapper.INSTANCE;
         Genre genre = genreMapper.dtoGenreToGenre(genreDTO);
@@ -71,6 +74,7 @@ public class GenreServiceImpl implements GenreService {
     ) {
         responseMapper = ResponseMapper.INSTANCE;
         genreMapper = GenreMapper.INSTANCE;
+        paginationMapper = PaginationMapper.INSTANCE;
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Genre"));
 
@@ -80,36 +84,41 @@ public class GenreServiceImpl implements GenreService {
         }
         return  responseMapper.mapToResponse(
                 genres.getContent().stream().map(genre -> genreMapper.genreToDtoGenre(genre)).toList(),
-                pageNumber,
-                pageSize,
-                genres.getTotalElements(),
-                genres.isLast()
+                paginationMapper.mapToResponse(
+                        pageNumber,
+                        pageSize,
+                        genres.getTotalElements(),
+                        genres.isLast()
+                )
         );
     }
 
     @Override
     @Cacheable("SongsByGenre")
     public GeneralResponse getSongsByGenre(
-            Long genreId,
+            String name,
             Integer pageNumber,
             Integer pageSize,
             String sortBy,
             String sortDir
     ) {
         responseMapper = ResponseMapper.INSTANCE;
-        Genre genre = genreRepository.findById(genreId).orElseThrow(() -> new ResourceNotFoundException("Genre", "id", genreId.toString()));
+        Genre genre = genreRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Genre", "name", name));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Song"));
+
         Page<Song> songs = songRepository.findAllByGenresContains(genre, pageable);
         if (songs.isEmpty()) {
             throw new ResourceNotFoundException("Song", "page", pageNumber.toString());
         }
 
         return responseMapper.mapToResponse(
-                responseMapper.toObjectList(songs.getContent().stream().map(song -> songMapper.songToDtoSong(song)).toList()),
-                pageNumber,
-                pageSize,
-                songs.getTotalElements(),
-                songs.isLast()
+                songs.getContent().stream().map(song -> songMapper.songToDtoSong(song)).toList(),
+                paginationMapper.mapToResponse(
+                        pageNumber,
+                        pageSize,
+                        songs.getTotalElements(),
+                        songs.isLast()
+                )
         );
     }
 

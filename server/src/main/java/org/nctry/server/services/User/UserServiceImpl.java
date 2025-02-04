@@ -4,6 +4,7 @@ import org.nctry.server.DTO.UserDTO;
 import org.nctry.server.DTO.UserFullDataDTO;
 import org.nctry.server.Exceptions.ResourceNotFoundException;
 import org.nctry.server.Utilities.Pages.SortUtils;
+import org.nctry.server.Utilities.Pages.mappers.PaginationMapper;
 import org.nctry.server.Utilities.Pages.mappers.ResponseMapper;
 import org.nctry.server.Utilities.Pages.response.GeneralResponse;
 import org.nctry.server.user.model.User;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
 
     //Mapper
     private ResponseMapper responseMapper;
+    private PaginationMapper paginationMapper;
 
     @Autowired
     public UserServiceImpl(IUserRepository userRepository, IUserFullData userFullData) {
@@ -37,6 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public GeneralResponse findAll(int pageNumber, int pageSize, String sortBy, String sortDir) {
         responseMapper = ResponseMapper.INSTANCE;
+        paginationMapper = PaginationMapper.INSTANCE;
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
@@ -46,10 +49,11 @@ public class UserServiceImpl implements UserService {
 
         return responseMapper.mapToResponse(
                 users.getContent().stream().map(this::mapToUserDTO).toList(),
-                users.getNumber(),
-                users.getSize(),
-                users.getTotalElements(),
-                users.isLast());
+                paginationMapper.mapToResponse(
+                        users.getNumber(),
+                        users.getSize(),
+                        users.getTotalElements(),
+                        users.isLast()));
     }
 
     @Override

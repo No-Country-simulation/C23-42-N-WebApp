@@ -9,7 +9,7 @@ public interface GenreService {
     dtoGenre saveGenre(dtoGenre genreDTO);
     //void deleteGenre(Long genreDTO);
     GeneralResponse getAllGenres(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
-    GeneralResponse getSongsByGenre(Long genreId, Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
+    GeneralResponse getSongsByGenre(String name, Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
     dtoSong assignGenreToSong(Long genreId, Long songId);
     dtoSong unassignGenreFromSong(Long genreId, Long songId);
     dtoPlaylist assignGenreToPlaylist(Long genreId, Long playlistId);
