@@ -29,13 +29,6 @@ public interface SongService {
             String sortBy,
             String sortDir);
 
-    @Cacheable("all-songs-byGenre")
-    GeneralResponse getAllActiveSongsByGenre(
-            String genreName,
-            Integer pageNumber,
-            Integer pageSize,
-            String sortBy,
-            String sortDir);
 
     dtoSong getSongById(Long id);
 

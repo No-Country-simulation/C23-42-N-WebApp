@@ -10,5 +10,9 @@ public interface PaginationMapper {
     PaginationMapper INSTANCE = Mappers.getMapper(PaginationMapper.class);
 
 
+   /* @Mapping(target = "pageNumber", source = "pageNumber")
+    @Mapping(target = "pageSize", source = "pageSize")
+    @Mapping(target = "totalElements", source = "totalElements")
+    @Mapping(target = "last", source = "last")*/
     PaginationResponse mapToResponse(int pageNumber, int pageSize, long totalElements, boolean last);
 }

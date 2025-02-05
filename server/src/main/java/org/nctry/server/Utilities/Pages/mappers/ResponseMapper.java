@@ -9,11 +9,14 @@ import org.nctry.server.Utilities.Pages.response.PaginationResponse;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface ResponseMapper {
     ResponseMapper INSTANCE = Mappers.getMapper(ResponseMapper.class);
 
     List<Object> toObjectList(List<?> content);
 
+
+    @Mapping(target = "pagination", source = "pagination")
+    @Mapping(target = "content", source = "content")
     GeneralResponse mapToResponse(List<?> content, PaginationResponse pagination);
 }

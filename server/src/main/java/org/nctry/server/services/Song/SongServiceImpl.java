@@ -56,7 +56,7 @@ public class SongServiceImpl implements SongService {
             String sortBy,
             String sortDir)
     {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Genre"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Songs"));
 
         paginationMapper = paginationMapper.INSTANCE;
         responseMapper = responseMapper.INSTANCE;
@@ -128,38 +128,6 @@ public class SongServiceImpl implements SongService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Song"));
 
         Page<Song> songs = songRepository.findByArtists_NameContainingIgnoreCaseAndIsPublicTrue(artistName, pageable);
-
-        if (songs.isEmpty()) {
-            throw new ResourceNotFoundException("Song", "page", pageNumber.toString());
-        }
-
-        return responseMapper.mapToResponse(
-                songs.getContent().stream().map(songMapper::songToDtoSong).toList(),
-                paginationMapper.mapToResponse(
-                        pageNumber,
-                        pageSize,
-                        songs.getTotalElements(),
-                        songs.isLast()
-                )
-        );
-    }
-
-    @Override
-    @Cacheable("all-songs-byGenre")
-    public GeneralResponse getAllActiveSongsByGenre(
-            String genreName,
-            Integer pageNumber,
-            Integer pageSize,
-            String sortBy,
-            String sortDir)
-    {
-        paginationMapper = paginationMapper.INSTANCE;
-        responseMapper = responseMapper.INSTANCE;
-        songMapper = songMapper.INSTANCE;
-
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Song"));
-
-        Page<Song> songs = songRepository.findByGenres_NameContainingIgnoreCaseAndIsPublicTrue(genreName, pageable);
 
         if (songs.isEmpty()) {
             throw new ResourceNotFoundException("Song", "page", pageNumber.toString());
