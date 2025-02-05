@@ -1,63 +1,86 @@
 import { useState, useEffect } from "react"
-import { useUserStore } from "@/store/useUserStore"
-import Avatar from "react-avatar"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { artists } from "@/lib/artists"
 
 export function Header() {
-  const { user } = useUserStore()
-  const [isLoading, setIsLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [searchResults, setSearchResults] = useState([])
+  const [showResults, setShowResults] = useState(false)
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 2000) // Simula una carga de 2 segundos
+    if (searchTerm) {
+      const results = artists.filter((artist) => artist.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      setSearchResults(results)
+      setShowResults(true)
+    } else {
+      setSearchResults([])
+      setShowResults(false)
+    }
+  }, [searchTerm])
 
-    return () => clearTimeout(timer)
-  }, [])
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value)
+  }
 
   return (
-    <header className="sticky top-0 bg-background/95 p-4 backdrop-blur-md">
-      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-4">
-        <div className="w-full flex-grow relative">
-          {isLoading ? (
-            <Skeleton className="h-10 sm:h-12 w-full rounded-xl" />
-          ) : (
-            <div className="relative">
-              <Input
-                type="search"
-                placeholder="Search for a song"
-                className="h-10 sm:h-12 pl-10 pr-4 rounded-xl bg-secondary/50 border-0 placeholder:text-muted-foreground/60 w-full text-sm sm:text-base"
-              />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground/60" />
+    <header className="w-full bg-white px-4 py-3 fixed top-0 z-50">
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
+       
+
+        <div className="relative w-full max-w-md mx-4">
+          <Input
+            type="search"
+            placeholder="Search for a song"
+            className="h-10 pl-10 pr-4 rounded-xl bg-white border-0 placeholder:text-gray-400 w-full text-sm focus:ring-[#3E8B7E] focus:ring-2"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+
+          {/* Results dropdown */}
+          {showResults && searchTerm && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-[#2A2A2A] rounded-xl shadow-lg overflow-hidden">
+              {searchResults.length > 0 ? (
+                <div className="max-h-96 overflow-y-auto">
+                  {searchResults.map((artist) => (
+                    <div key={artist.name} className="flex items-center gap-3 p-3 hover:bg-[#3E8B7E]/10 cursor-pointer">
+                      <img
+                        src={artist.image || "/placeholder.svg"}
+                        alt={artist.name}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div>
+                        <p className="text-white font-medium">{artist.name}</p>
+                        <p className="text-gray-400 text-sm">{artist.followers} followers</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-4 text-center">
+                  <p className="text-gray-400">No results found</p>
+                </div>
+              )}
             </div>
           )}
         </div>
+
         <div className="flex items-center gap-4">
-          {isLoading ? (
-            <Skeleton className="h-14 w-14 rounded-full shrink-0" />
-          ) : (
-            <Avatar name={user?.username} size="60" round={true} color="#FF5722" className="shrink-0" />
-          )}
-          <div className="flex flex-col">
-            {isLoading ? (
-              <>
-                <Skeleton className="h-4 w-24 rounded-md mb-1" />
-                <Skeleton className="h-3 w-20 rounded-md" />
-              </>
-            ) : (
-              <>
-                <span className="text-gray-500 text-[14px] font-semibold capitalize">{user?.username}</span>
-                <span className="text-gray-500 text-[13px]">1,2k Followers</span>
-              </>
-            )}
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-[#E67E22] flex items-center justify-center text-white">S</div>
+            <div className="hidden sm:block">
+              <p className="text-white">Seven</p>
+              <p className="text-gray-400 text-sm">1.2k Followers</p>
+            </div>
           </div>
         </div>
       </div>
     </header>
   )
 }
+
+
 
 
 
