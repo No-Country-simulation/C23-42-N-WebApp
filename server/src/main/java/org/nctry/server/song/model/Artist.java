@@ -1,5 +1,6 @@
 package org.nctry.server.song.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Set;
 @Entity
 @Data
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"songs"})
 @Table(name = "artists")
 public class Artist extends EntityClass {
     @Column(name = "name", nullable = false, unique = true, length = 50)
@@ -33,6 +34,7 @@ public class Artist extends EntityClass {
             joinColumns = @JoinColumn(name = "artist_id"),
             inverseJoinColumns = @JoinColumn(name = "song_id")
     )
-    @JsonManagedReference
+    //@JsonManagedReference
+    @JsonIgnore
     private Set<Song> songs;
 }
