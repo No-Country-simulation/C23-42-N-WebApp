@@ -22,9 +22,9 @@ spring:
 #        starttls:
 #          enable: true
   minio:
-    endpoint: ${MINIO_URL}
-    access-key: ${MINIO_USER}
-    secret-key: ${MINIO_PASSWD}
+    endpoint: https://console.minio.icu/
+    access-key: minioadmin
+    secret-key: minioadmin
   logging:
     level:
       org.springframework.mail: DEBUG

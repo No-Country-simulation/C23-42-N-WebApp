@@ -15,5 +15,5 @@ public class dtoArtist {
     private  String coverPicture;
     private Country country;
     private String bio;
-    private Set<dtoSong> songs;
+    private Set<DtoSong> songs;
 }
