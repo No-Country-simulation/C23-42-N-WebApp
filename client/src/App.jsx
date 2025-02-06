@@ -1,23 +1,33 @@
-import "./App.css";
-import { Button } from "./components/ui/button";
-import { useStore } from "./store/useExampleStore.js";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { Layout } from "./components/Layout"
+import { PrivateRoute } from "./components/PrivateRoute"
+import RegisterPage from "./pages/RegisterPage"
+import LoginPage from "./pages/LoginPage"
+import { Home } from "./pages/home"
+import { Feed } from "./pages/Feed"
 
 function App() {
-  const bears = useStore((state) => state.bears);
-  const increasePopulation = useStore((state) => state.increasePopulation);
-  const removeAllBears = useStore((state) => state.removeAllBears);
-  const updateBears = useStore((state) => state.updateBears);
-
-  console.log(bears);
   return (
-    <>
-      <h1>hello world</h1>
-      <span className="text-3xl">{bears}</span>
-      <Button onClick={increasePopulation}>buton</Button>
-      <Button onClick={removeAllBears}>resetear</Button>
-      <Button onClick={() => updateBears(77)}>actualizar numero a 77</Button>
-    </>
-  );
+    <Router>
+      <Routes>
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+
+        <Route element={<PrivateRoute />}>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/feed" element={<Feed />} />
+          </Route>
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
+  )
 }
 
-export default App;
+export default App
+
+
+
+

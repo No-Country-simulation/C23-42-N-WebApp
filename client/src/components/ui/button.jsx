@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
@@ -18,6 +19,8 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        btnOrange:
+          "bg-orangePrimary text-primary-foreground text-sm shadow font-medium hover:bg-orangePrimary/90  border-none focus:outline-none",
       },
       size: {
         default: "h-9 px-4 py-2",
