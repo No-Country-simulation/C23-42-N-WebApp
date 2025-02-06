@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Taylor Swift",
+    "image": "/images/Taylor.jpg",
+    "followers": "100M",
+    "song": "Love Story",
+    "genre": "Pop"
+  },
+  {
+    "name": "Bad Bunny",
+    "image": "/images/Bad bunny.PNG",
+    "followers": "80M",
+    "song": "Tití Me Preguntó",
+    "genre": "Reggaeton"
+  },
+  {
+    "name": "The Weeknd",
+    "image": "/images/the weeknd.png",
+    "followers": "75M",
+    "song": "Blinding Lights",
+    "genre": "R&B"
+  },
+  {
+    "name": "Drake",
+    "image": "/images/drake.jpg",
+    "followers": "70M",
+    "song": "God's Plan",
+    "genre": "Hip-Hop"
+  },
+  {
+    "name": "Ed Sheeran",
+    "image": "/images/ed sheeran.jpg",
+    "followers": "95M",
+    "song": "Shape of You",
+    "genre": "Pop"
+  },
+  {
+    "name": "Ariana Grande",
+    "image": "/images/ariana grande.jpg",
+    "followers": "85M",
+    "song": "7 rings",
+    "genre": "Pop"
+  }
+]
