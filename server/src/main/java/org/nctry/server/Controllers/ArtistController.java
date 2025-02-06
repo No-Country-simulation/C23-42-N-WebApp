@@ -2,7 +2,7 @@ package org.nctry.server.Controllers;
 
 import org.nctry.server.Utilities.Pages.PaginationUtils;
 import org.nctry.server.services.Artist.ArtistService;
-import org.nctry.server.song.dto.response.dtoArtist;
+import org.nctry.server.song.dto.response.DtoArtist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +23,14 @@ public class ArtistController {
         this.artistService = artistService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Object> createArtist(@RequestBody dtoArtist dtoArtist){
+    /*@PostMapping("/create")
+    public ResponseEntity<Object> createArtist(@RequestBody DtoArtist dtoArtist){
         data = new HashMap<>();
-        dtoArtist savedArtist = artistService.saveArtist(dtoArtist);
+        DtoArtist savedArtist = artistService.saveArtist(dtoArtist);
         data.put("message", "Artist created successfully");
         data.put("artist", savedArtist);
         return ResponseEntity.ok(data);
-    }
+    }*/
 
     /*
     @PostMapping("/update")
