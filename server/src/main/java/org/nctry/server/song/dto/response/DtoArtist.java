@@ -1,19 +1,18 @@
 package org.nctry.server.song.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.nctry.server.user.enums.Country;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class dtoArtist {
+@Builder
+public class DtoArtist {
     private String name;
     private String lastname;
-    private  String coverPicture;
-    private Country country;
+    private String coverPicture;
+    private String country;
     private String bio;
-    private Set<DtoSong> songs;
 }
