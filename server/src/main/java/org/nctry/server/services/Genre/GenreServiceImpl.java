@@ -5,13 +5,15 @@ import org.nctry.server.Utilities.Pages.mappers.PaginationMapper;
 import org.nctry.server.Utilities.Pages.mappers.ResponseMapper;
 import org.nctry.server.Utilities.Pages.response.GeneralResponse;
 import org.nctry.server.Exceptions.ResourceNotFoundException;
+import org.nctry.server.Utilities.Pages.response.PaginationResponse;
 import org.nctry.server.minio.services.MinioManager;
 import org.nctry.server.song.dto.maps.GenreMapper;
 import org.nctry.server.song.dto.maps.PlaylistMapper;
 import org.nctry.server.song.dto.maps.SongMapper;
-import org.nctry.server.song.dto.response.dtoGenre;
+import org.nctry.server.song.dto.response.DtoArtist;
+import org.nctry.server.song.dto.response.DtoSong;
+import org.nctry.server.song.dto.response.DtoGenre;
 import org.nctry.server.song.dto.response.dtoPlaylist;
-import org.nctry.server.song.dto.response.dtoSong;
 import org.nctry.server.song.model.Genre;
 import org.nctry.server.song.model.Playlist;
 import org.nctry.server.song.model.Song;
@@ -26,6 +28,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -38,11 +41,11 @@ public class GenreServiceImpl implements GenreService {
     private final MinioManager minioManager;
 
     //Mappers
-    private SongMapper songMapper;
+    /*private SongMapper songMapper;
     private GenreMapper genreMapper;
     private ResponseMapper responseMapper;
     private PlaylistMapper playlistMapper;
-    private PaginationMapper paginationMapper;
+    private PaginationMapper paginationMapper;*/
 
     @Autowired
     public GenreServiceImpl(IGenreRepository genreRepository, ISongRepository songRepository, IPlaylistRepository playlistRepository, MinioManager minioManager) {
@@ -52,14 +55,14 @@ public class GenreServiceImpl implements GenreService {
         this.minioManager = minioManager;
     }
 
-    @Override
+    /*@Override
     @Cacheable
-    public dtoGenre saveGenre(dtoGenre genreDTO) {
+    public DtoGenre saveGenre(DtoGenre genreDTO) {
         genreMapper = GenreMapper.INSTANCE;
         Genre genre = genreMapper.dtoGenreToGenre(genreDTO);
         genreRepository.save(genre);
         return genreMapper.genreToDtoGenre(genre);
-    }
+    }*/
 
    /* @Override
     public void deleteGenre(Long genreDTO) {
@@ -71,23 +74,37 @@ public class GenreServiceImpl implements GenreService {
     }*/
 
     @Override
-    @Cacheable("all-genres")
+    //@Cacheable("all-genres")
     public GeneralResponse getAllGenres(
             Integer pageNumber,
             Integer pageSize,
             String sortBy,
             String sortDir
     ) {
-        responseMapper = ResponseMapper.INSTANCE;
+        /*responseMapper = ResponseMapper.INSTANCE;
         genreMapper = GenreMapper.INSTANCE;
-        paginationMapper = PaginationMapper.INSTANCE;
+        paginationMapper = PaginationMapper.INSTANCE;*/
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Genre"));
         Page<Genre> genres = genreRepository.findAll(pageable);
         if (genres.isEmpty()) {
             throw new ResourceNotFoundException("Genre", "page", pageNumber.toString());
         }
-        return  responseMapper.mapToResponse(
+
+        List<DtoGenre> dtoGenres = genres.getContent().stream()
+                .map(genre -> DtoGenre.builder()
+                        .description(genre.getDescription())
+                        .name(genre.getName())
+                        .build())
+                .toList();
+
+        GeneralResponse response = GeneralResponse.builder()
+                .content(dtoGenres)
+                .build();
+
+        return response;
+
+        /*return  responseMapper.mapToResponse(
                 genres.getContent().stream().map(genre -> genreMapper.genreToDtoGenre(genre)).toList(),
                 paginationMapper.mapToResponse(
                         pageNumber,
@@ -95,11 +112,11 @@ public class GenreServiceImpl implements GenreService {
                         genres.getTotalElements(),
                         genres.isLast()
                 )
-        );
+        );*/
     }
 
     @Override
-    @Cacheable("SongsByGenre")
+    //@Cacheable("SongsByGenre")
     public GeneralResponse getSongsByGenre(
             String name,
             Integer pageNumber,
@@ -107,9 +124,9 @@ public class GenreServiceImpl implements GenreService {
             String sortBy,
             String sortDir
     ) {
-        responseMapper = ResponseMapper.INSTANCE;
+        /*responseMapper = ResponseMapper.INSTANCE;
         songMapper = SongMapper.INSTANCE;
-        paginationMapper = PaginationMapper.INSTANCE;
+        paginationMapper = PaginationMapper.INSTANCE;*/
         Genre genre = genreRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Genre", "name", name));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Song"));
 
@@ -118,27 +135,55 @@ public class GenreServiceImpl implements GenreService {
             throw new ResourceNotFoundException("Song", "page", pageNumber.toString());
         }
 
-        List<Song> modifiedSongs = songs.getContent().stream()
-                .peek(song -> {
-                    song.setCoverPicture(minioManager.getPresignedUrl(song.getCoverPicture()));
-                    song.setSourceUrl(minioManager.getPresignedUrl(song.getSourceUrl()));
-                })
+        List<DtoSong> songsDto = songs.getContent().stream()
+                .map(song -> DtoSong.builder()
+                        .name(song.getName())
+                        .coverPicture(minioManager.getPresignedUrl(song.getCoverPicture()))
+                        .sourceUrl(minioManager.getPresignedUrl(song.getSourceUrl()))
+                        .artists(
+                                song.getArtists().stream().map(artist -> DtoArtist.builder()
+                                        .name(artist.getName())
+                                        .lastname(artist.getLastname())
+                                        .coverPicture(minioManager.getPresignedUrl(artist.getCoverPicture()))
+                                        .country(artist.getCountry().toString())
+                                        .bio(artist.getBio())
+                                        .build())
+                                        .collect(Collectors.toSet())
+                        )
+                        //.artistId(song.getArtistId())
+                        .durationSeconds(song.getDurationSeconds())
+                        .likes(song.getLikes())
+                        .isPublic(true)
+                        .build())
                 .toList();
 
-        return responseMapper.mapToResponse(
-                songs.getContent().stream().map(song -> songMapper.songToDtoSong(song)).toList(),
+        GeneralResponse response = GeneralResponse.builder()
+                .content(songsDto)
+                .pagination(PaginationResponse.builder()
+                        .pageNumber(pageNumber)
+                        .pageSize(pageSize)
+                        .totalElements(songs.getTotalElements())
+                        .last(songs.isLast())
+                        .build())
+                .build();
+
+        return response;
+
+        /*return responseMapper.mapToResponse(
+                modifiedSongs.stream().map(song -> songMapper.songToDtoSong(song)).toList(),
                 paginationMapper.mapToResponse(
                         pageNumber,
                         pageSize,
                         songs.getTotalElements(),
                         songs.isLast()
                 )
-        );
+        );*/
     }
 
+    /*
     @Override
     @Cacheable("assignedToSong")
-    public dtoSong assignGenreToSong(Long genreId, Long songId) {
+    public DtoSong assignGenreToSong(Long genreId, Long songId) {
         Genre genre = genreRepository.findById(genreId).orElseThrow(() -> new ResourceNotFoundException("Genre", "id", genreId.toString()));
         Song song = songRepository.findById(songId).orElseThrow(() -> new ResourceNotFoundException("Song", "id", songId.toString()));
         song.getGenres().add(genre);
@@ -149,7 +194,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Cacheable("unassignedToSong")
-    public dtoSong unassignGenreFromSong(Long genreId, Long songId) {
+    public DtoSong unassignGenreFromSong(Long genreId, Long songId) {
         songMapper = SongMapper.INSTANCE;
 
         Genre genre = genreRepository.findById(genreId).orElseThrow(() -> new ResourceNotFoundException("Genre", "id", genreId.toString()));
@@ -186,7 +231,7 @@ public class GenreServiceImpl implements GenreService {
         playlistRepository.save(playlist);
 
         return playlistMapper.playlistToDtoPlaylist(playlist);
-    }
+    }*/
 
     /*@Override
     public void assignGenreToArtist(Long genreId, Long artistId) {
