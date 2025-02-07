@@ -42,12 +42,13 @@ export default function LoginForm() {
                           <span className="text-red-500"> *</span>
                         </FormLabel>
                         <FormControl>
-                          <Input
-                            type={field.type}
-                            placeholder={field.placeholder}
-                            className="placeholder:text-gray-500 placeholder:opacity-50"
-                            {...formField}
-                          />
+                        <Input
+  type={field.type}
+  placeholder={field.placeholder}
+  className="placeholder:text-gray-500 placeholder:opacity-50"
+  autoComplete={field.autoComplete || "off"} // Ensure explicit autocomplete
+  {...formField}
+/>
                         </FormControl>
                         <FormMessage className="text-left w-full block font-medium" />
                       </FormItem>

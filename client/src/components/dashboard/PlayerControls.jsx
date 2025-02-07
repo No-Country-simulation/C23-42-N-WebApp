@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Play, Pause, SkipBack, SkipForward, Heart, Repeat, Shuffle, Volume2 } from "lucide-react"
 
 // Asume que estas son las URLs de tu canción de prueba
-const TEST_SONG_URL = "https://console.minio.icu/audio/Lady%20Gaga%20-%20Judas%20(Audio).mp3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250203%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250203T224545Z&X-Amz-Expires=259200&X-Amz-SignedHeaders=host&X-Amz-Signature=f1b084b5ee2a7d08a2a3cd890b2ef41743563503ee89f9df8569319ffa96ee59"
+const TEST_SONG_URL = "https://console.minio.icu/audio/Lady%20Gaga%20-%20Judas%20(Audio).mp3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250207%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250207T001040Z&X-Amz-Expires=172800&X-Amz-SignedHeaders=host&X-Amz-Signature=8e38d158281aafe6b4d15d41fde343569a546295056cd0f65a746e599cd159ff"
 
 export function PlayerControls() {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -54,7 +54,7 @@ export function PlayerControls() {
         {/* Song Info */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-muted rounded-full overflow-hidden">
-            <img src=" https://console.minio.icu/images/lady-gaga.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250203%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250203T225016Z&X-Amz-Expires=259200&X-Amz-SignedHeaders=host&X-Amz-Signature=edc0f5f31250896285e6ca67d842f8d66af8000d878716be1f7dbfbb54f01757" alt="Song cover" className="w-full h-full object-cover" />
+            <img src="https://console.minio.icu/coverpicture/ccpladyGaga.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250207%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250207T012208Z&X-Amz-Expires=172800&X-Amz-SignedHeaders=host&X-Amz-Signature=58e155f993e164a391668d599265551502fa9a6c0539a8361433fee8cd07d028"alt="Song cover" className="w-full h-full object-cover" />
           </div>
           <div>
             <h3 className="text-sm font-medium text-foreground">Nombre de la canción</h3>
