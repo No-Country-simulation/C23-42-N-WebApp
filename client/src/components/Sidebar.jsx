@@ -68,7 +68,7 @@ export function Sidebar() {
           </div>
         </div>
 
-        <ScrollArea className="hidden md:flex h-[45vh]">
+        <ScrollArea className="hidden md:flex h-[35vh]">
           <div className="space-y-1 p-2">
             {Array.from({ length: 50 }).map((_, i) => (
               <PlaylistItem
