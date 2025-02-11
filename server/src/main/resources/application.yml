@@ -21,6 +21,10 @@ spring:
 #          auth: true
 #        starttls:
 #          enable: true
+  minio:
+    endpoint: https://console.minio.icu/
+    access-key: minioadmin
+    secret-key: minioadmin
   logging:
     level:
       org.springframework.mail: DEBUG

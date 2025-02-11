@@ -1,24 +1,24 @@
 package org.nctry.server.services.Song;
 
-import jakarta.transaction.Transactional;
 import org.nctry.server.Exceptions.ResourceNotFoundException;
 import org.nctry.server.Utilities.Pages.SortUtils;
-import org.nctry.server.Utilities.Pages.mappers.PaginationMapper;
-import org.nctry.server.Utilities.Pages.mappers.ResponseMapper;
 import org.nctry.server.Utilities.Pages.response.GeneralResponse;
-import org.nctry.server.song.dto.maps.SongMapper;
-import org.nctry.server.song.dto.response.dtoSong;
+import org.nctry.server.Utilities.Pages.response.PaginationResponse;
+import org.nctry.server.minio.services.MinioManager;
+import org.nctry.server.song.dto.response.DtoArtist;
+import org.nctry.server.song.dto.response.DtoSong;
 import org.nctry.server.song.model.Song;
 import org.nctry.server.song.repository.IArtistRepository;
 import org.nctry.server.song.repository.IGenreRepository;
-import org.nctry.server.song.repository.IPlaylistRepository;
 import org.nctry.server.song.repository.ISongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SongServiceImpl implements SongService {
@@ -26,12 +26,12 @@ public class SongServiceImpl implements SongService {
     private final IGenreRepository genreRepository;
     private final ISongRepository songRepository;
     private final IArtistRepository artistRepository;
-    private final IPlaylistRepository playlistRepository;
 
+    private final MinioManager minioManager;
     //Mappers
-    private ResponseMapper responseMapper;
+    /*private ResponseMapper responseMapper;
     private PaginationMapper paginationMapper;
-    private SongMapper songMapper;
+    private SongMapper songMapper;*/
 
 
     @Autowired
@@ -39,36 +39,60 @@ public class SongServiceImpl implements SongService {
             IGenreRepository genreRepository,
             ISongRepository songRepository,
             IArtistRepository artistRepository,
-            IPlaylistRepository playlistRepository
-            )
+            MinioManager minioManager
+    )
     {
         this.genreRepository = genreRepository;
         this.songRepository = songRepository;
         this.artistRepository = artistRepository;
-        this.playlistRepository = playlistRepository;
+        this.minioManager = minioManager;
     }
 
     @Override
-    @Cacheable("all-songs")
+    //@Cacheable("all-songs")
     public GeneralResponse getAllActiveSongs(
             Integer pageNumber,
             Integer pageSize,
             String sortBy,
             String sortDir)
     {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Genre"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Songs"));
 
-        paginationMapper = paginationMapper.INSTANCE;
+        /*paginationMapper = paginationMapper.INSTANCE;
         responseMapper = responseMapper.INSTANCE;
-        songMapper = songMapper.INSTANCE;
+        songMapper = songMapper.INSTANCE;*/
 
-        Page<Song> songs = songRepository.findAllByIsActiveTrueAndIsPublicTrue(pageable);
+        //Page<Song> songs = songRepository.findAllByIsActiveTrueAndIsPublicTrue(pageable);
+        Page<Song> songs = songRepository.findAllSongs(pageable);
 
         if (songs.isEmpty()) {
             throw new ResourceNotFoundException("Song", "page", pageNumber.toString());
         }
 
-        return  responseMapper.mapToResponse(
+        List<DtoSong> songsDto = songs.getContent().stream()
+                .map(song -> DtoSong.builder()
+                        .name(song.getName())
+                        .coverPicture(minioManager.getPresignedUrl(song.getCoverPicture()))
+                        .sourceUrl(minioManager.getPresignedUrl(song.getSourceUrl()))
+                        .artists(song.getArtists().stream()
+                                .map(artist -> DtoArtist.builder()
+                                        .name(artist.getName())
+                                        .lastname(artist.getLastname())
+                                        .coverPicture(minioManager.getPresignedUrl(artist.getCoverPicture())) //artista
+                                        .country(artist.getCountry().toString())
+                                        .bio(artist.getBio())
+                                        .build())
+                                .collect(Collectors.toSet()))
+                        .durationSeconds(song.getDurationSeconds())
+                        .likes(song.getLikes())
+                        .isPublic(true)
+                        .build())
+                .toList();
+
+        return GeneralResponse.builder()
+                .content(songsDto)
+                .build();
+        /*return  responseMapper.mapToResponse(
                 songs.getContent().stream().map(songMapper::songToDtoSong).toList(),
                 paginationMapper.mapToResponse(
                         pageNumber,
@@ -76,11 +100,11 @@ public class SongServiceImpl implements SongService {
                         songs.getTotalElements(),
                         songs.isLast()
                 )
-        );
+        );*/
     }
 
     @Override
-    @Cacheable("all-songs-byName")
+    //@Cacheable("all-songs-byName")
     public GeneralResponse getAllActiveSongsByName(
             String name,
             Integer pageNumber,
@@ -88,10 +112,9 @@ public class SongServiceImpl implements SongService {
             String sortBy,
             String sortDir)
     {
-        paginationMapper = paginationMapper.INSTANCE;
+        /*paginationMapper = paginationMapper.INSTANCE;
         responseMapper = responseMapper.INSTANCE;
-        songMapper = songMapper.INSTANCE;
-
+        songMapper = songMapper.INSTANCE;*/
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Song"));
 
@@ -101,7 +124,37 @@ public class SongServiceImpl implements SongService {
             throw new ResourceNotFoundException("Song", "page", pageNumber.toString());
         }
 
-        return responseMapper.mapToResponse(
+        List<DtoSong> songsDto = songs.getContent().stream()
+                .map(song -> DtoSong.builder()
+                        .name(song.getName())
+                        .coverPicture(minioManager.getPresignedUrl(song.getCoverPicture()))
+                        .sourceUrl(minioManager.getPresignedUrl(song.getSourceUrl()))
+                        .durationSeconds(song.getDurationSeconds())
+                        .likes(song.getLikes())
+                        .isPublic(true)
+                        .artists(song.getArtists().stream()
+                                .map(artist -> DtoArtist.builder()
+                                        .name(artist.getName())
+                                        .lastname(artist.getLastname())
+                                        .coverPicture(minioManager.getPresignedUrl(artist.getCoverPicture()))
+                                        .country(artist.getCountry().toString())
+                                        .bio(artist.getBio())
+                                        .build())
+                                .collect(Collectors.toSet()))
+                        .build())
+                .toList();
+
+        return GeneralResponse.builder()
+                .content(songsDto)
+                .pagination(PaginationResponse.builder()
+                        .pageNumber(pageNumber)
+                        .pageSize(pageSize)
+                        .totalElements(songs.getTotalElements())
+                        .last(songs.isLast())
+                        .build())
+                .build();
+
+        /*return responseMapper.mapToResponse(
                 songs.getContent().stream().map(songMapper::songToDtoSong).toList(),
                 paginationMapper.mapToResponse(
                         pageNumber,
@@ -109,11 +162,11 @@ public class SongServiceImpl implements SongService {
                         songs.getTotalElements(),
                         songs.isLast()
                 )
-        );
+        );*/
     }
 
     @Override
-    @Cacheable("all-songs-byArtist")
+    //@Cacheable("all-songs-byArtist")
     public GeneralResponse getAllActiveSongsByArtist(
             String artistName,
             Integer pageNumber,
@@ -121,9 +174,9 @@ public class SongServiceImpl implements SongService {
             String sortBy,
             String sortDir)
     {
-        paginationMapper = paginationMapper.INSTANCE;
+        /*paginationMapper = paginationMapper.INSTANCE;
         responseMapper = responseMapper.INSTANCE;
-        songMapper = songMapper.INSTANCE;
+        songMapper = songMapper.INSTANCE;*/
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Song"));
 
@@ -133,7 +186,36 @@ public class SongServiceImpl implements SongService {
             throw new ResourceNotFoundException("Song", "page", pageNumber.toString());
         }
 
-        return responseMapper.mapToResponse(
+        List<DtoSong> songsDto = songs.getContent().stream()
+                .map(song -> DtoSong.builder()
+                        .name(song.getName())
+                        .coverPicture(minioManager.getPresignedUrl(song.getCoverPicture()))
+                        .sourceUrl(minioManager.getPresignedUrl(song.getSourceUrl()))
+                        .durationSeconds(song.getDurationSeconds())
+                        .likes(song.getLikes())
+                        .isPublic(song.isPublic())
+                        .artists(song.getArtists().stream()
+                                .map(artist -> DtoArtist.builder()
+                                        .name(artist.getName())
+                                        .lastname(artist.getLastname())
+                                        .coverPicture(minioManager.getPresignedUrl(artist.getCoverPicture()))
+                                        .country(artist.getCountry().toString())
+                                        .bio(artist.getBio())
+                                        .build())
+                                .collect(Collectors.toSet()))
+                        .build())
+                .toList();
+
+        return GeneralResponse.builder()
+                .content(songsDto)
+                .pagination(PaginationResponse.builder()
+                        .pageNumber(pageNumber)
+                        .pageSize(pageSize)
+                        .totalElements(songs.getTotalElements())
+                        .last(songs.isLast())
+                        .build())
+                .build();
+        /*return responseMapper.mapToResponse(
                 songs.getContent().stream().map(songMapper::songToDtoSong).toList(),
                 paginationMapper.mapToResponse(
                         pageNumber,
@@ -141,42 +223,10 @@ public class SongServiceImpl implements SongService {
                         songs.getTotalElements(),
                         songs.isLast()
                 )
-        );
+        );*/
     }
 
-    @Override
-    @Cacheable("all-songs-byGenre")
-    public GeneralResponse getAllActiveSongsByGenre(
-            String genreName,
-            Integer pageNumber,
-            Integer pageSize,
-            String sortBy,
-            String sortDir)
-    {
-        paginationMapper = paginationMapper.INSTANCE;
-        responseMapper = responseMapper.INSTANCE;
-        songMapper = songMapper.INSTANCE;
-
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, SortUtils.getSort(pageNumber, pageSize, sortBy, sortDir, "Song"));
-
-        Page<Song> songs = songRepository.findByGenres_NameContainingIgnoreCaseAndIsPublicTrue(genreName, pageable);
-
-        if (songs.isEmpty()) {
-            throw new ResourceNotFoundException("Song", "page", pageNumber.toString());
-        }
-
-        return responseMapper.mapToResponse(
-                songs.getContent().stream().map(songMapper::songToDtoSong).toList(),
-                paginationMapper.mapToResponse(
-                        pageNumber,
-                        pageSize,
-                        songs.getTotalElements(),
-                        songs.isLast()
-                )
-        );
-    }
-
-    @Override
+    /*@Override
     public dtoSong getSongById(Long id)
     {
         songMapper = songMapper.INSTANCE;
@@ -256,5 +306,5 @@ public class SongServiceImpl implements SongService {
         song.setLikes(song.getLikes() + 1);
 
         songRepository.save(song);
-    }
+    }*/
 }
