@@ -27,8 +27,8 @@ public class Playlist extends EntityClass {
 
     @ManyToMany
     @JoinTable(
-            name = "playlist_genre",
-            joinColumns = @JoinColumn(name = "playlist_id"),
+            name = "song_genre",
+            joinColumns = @JoinColumn(name = "song_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     @JsonManagedReference
@@ -36,19 +36,10 @@ public class Playlist extends EntityClass {
 
     @ManyToMany
     @JoinTable(
-            name = "playlist_song",
+            name = "song_playlist",
             joinColumns = @JoinColumn(name = "playlist_id"),
             inverseJoinColumns = @JoinColumn(name = "song_id")
     )
     @JsonManagedReference
     private Set<Song> songs;
-
-    @ManyToMany
-    @JoinTable(
-            name = "playlist_artist",
-            joinColumns = @JoinColumn(name = "playlist_id"),
-            inverseJoinColumns = @JoinColumn(name = "artist_id")
-    )
-    @JsonManagedReference
-    private Set<Artist> artists;
 }

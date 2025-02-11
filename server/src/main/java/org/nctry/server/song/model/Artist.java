@@ -1,6 +1,6 @@
 package org.nctry.server.song.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.util.Set;
 @Entity
 @Data
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"songs"})
 @Table(name = "artists")
 public class Artist extends EntityClass {
     @Column(name = "name", nullable = false, unique = true, length = 50)
@@ -30,23 +30,11 @@ public class Artist extends EntityClass {
 
     @ManyToMany
     @JoinTable(
-            name = "artist_song",
+            name = "song_artist",
             joinColumns = @JoinColumn(name = "artist_id"),
             inverseJoinColumns = @JoinColumn(name = "song_id")
     )
-    @JsonManagedReference
+    //@JsonManagedReference
+    @JsonIgnore
     private Set<Song> songs;
-
-    @ManyToMany
-    @JoinTable(
-            name = "artist_genre",
-            joinColumns = @JoinColumn(name = "artist_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
-    @JsonManagedReference
-    private Set<Genre> genres;
-
-    @ManyToMany(mappedBy = "artists")
-    @JsonBackReference
-    private Set<Playlist> playlists;
 }
