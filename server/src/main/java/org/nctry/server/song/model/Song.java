@@ -49,5 +49,4 @@ public class Song extends EntityClass {
     @JsonBackReference
     @JsonIgnore
     private Set<Artist> artists;
-
 }

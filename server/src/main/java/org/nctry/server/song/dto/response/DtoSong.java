@@ -19,5 +19,4 @@ public class DtoSong {
     private int durationSeconds;
     private int likes = 0;
     private boolean isPublic = true;
-
 }

@@ -1,8 +1,6 @@
 package org.nctry.server.services.Song;
 
 import org.nctry.server.Utilities.Pages.response.GeneralResponse;
-import org.nctry.server.song.dto.response.DtoSong;
-import org.springframework.cache.annotation.Cacheable;
 
 public interface SongService {
     //@Cacheable("all-songs")
@@ -27,7 +25,6 @@ public interface SongService {
             Integer pageSize,
             String sortBy,
             String sortDir);
-
 
     /*DtoSong getSongById(Long id);
 

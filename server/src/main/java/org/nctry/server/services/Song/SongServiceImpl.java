@@ -1,14 +1,10 @@
 package org.nctry.server.services.Song;
 
-import jakarta.transaction.Transactional;
 import org.nctry.server.Exceptions.ResourceNotFoundException;
 import org.nctry.server.Utilities.Pages.SortUtils;
-import org.nctry.server.Utilities.Pages.mappers.PaginationMapper;
-import org.nctry.server.Utilities.Pages.mappers.ResponseMapper;
 import org.nctry.server.Utilities.Pages.response.GeneralResponse;
 import org.nctry.server.Utilities.Pages.response.PaginationResponse;
 import org.nctry.server.minio.services.MinioManager;
-import org.nctry.server.song.dto.maps.SongMapper;
 import org.nctry.server.song.dto.response.DtoArtist;
 import org.nctry.server.song.dto.response.DtoSong;
 import org.nctry.server.song.model.Song;
@@ -16,7 +12,6 @@ import org.nctry.server.song.repository.IArtistRepository;
 import org.nctry.server.song.repository.IGenreRepository;
 import org.nctry.server.song.repository.ISongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

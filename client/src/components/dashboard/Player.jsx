@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import PlayerControls from "./PlayerControls";
+import { PlayerControls } from "./PlayerControls";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function Player() {

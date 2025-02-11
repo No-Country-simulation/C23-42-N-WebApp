@@ -15,6 +15,5 @@ public interface ResponseMapper {
 
     List<Object> toObjectList(List<?> content);
 
-    // Este es el mapeo genérico para la respuesta
     GeneralResponse mapToResponse(List<?> content, PaginationResponse pagination);
 }

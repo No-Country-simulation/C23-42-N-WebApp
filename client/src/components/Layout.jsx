@@ -13,7 +13,7 @@ export function Layout() {
         <main className="flex-1">
           <ScrollArea className="h-full">
             <Header />
-            
+      
             <Outlet />
           </ScrollArea>
         </main>
